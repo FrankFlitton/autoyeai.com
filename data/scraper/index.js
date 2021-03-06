@@ -50,14 +50,14 @@ const scraper = async (urlList = [], scrapingAction, waitFor = 'body', onlyScrap
             })
 
             // normal routine
-            await page.content()
-              .then((html) => {
-                scrapingAction(html, builtList, urlList[elem].url, urlList[elem].name, page)
-                console.log('🤞 I have kept my promise to scrape ' + urlList[elem].name)
-              })
-              .catch((err) => {
-                console.log(err)
-              })
+            try {
+              let html = await page.content()
+              await scrapingAction(html, builtList, urlList[elem].url, urlList[elem].name, page)
+              console.log('🤞 I have kept my promise to scrape ' + urlList[elem].name)
+            } catch (e) {
+              console.log(e)
+            }
+
           } catch (err) {
             console.log('❌ Sorry! I couldn\'t keep my promise to scrape ' + urlList[elem].name)
             failedList.push(urlList[elem])
