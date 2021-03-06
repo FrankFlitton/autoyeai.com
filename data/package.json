@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "songMeta": "node songMeta.js",
-    "songLyrics": "node songLyrics.js",
+    "getSongs": "node songMeta.js",
+    "getLyrics": "node songLyrics.js",
+    "makeAlbums": "node makeAlbums.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
