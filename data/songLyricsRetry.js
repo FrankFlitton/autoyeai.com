@@ -14,9 +14,16 @@ const scrapeSongPages = async (songs) => {
     true,
   )
 
-  // Append
+  let filteredLyrics = []
   for (let i = 0; i < newLyrics.length; i++) {
-    lyricsList.push(newLyrics[i])
+    if (newLyrics[i].lyrics !== undefined) {
+      filteredLyrics.push(newLyrics[i])
+    }
+  }
+
+  // Append
+  for (let i = 0; i < filteredLyrics.length; i++) {
+    lyricsList.push(filteredLyrics[i])
   }
   json.saveFile('./rawdata/lyricsNew', lyricsList)
 }
