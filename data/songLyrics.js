@@ -11,10 +11,8 @@ const songList = songData.map(song => {
   }
 })
 
-const failedSongs = json.readFile('./jsonFailed')
-
 const scrapeSongPages = async (songs) => {
-  scrapedLyrics = await scraper(
+  const scrapedLyrics = await scraper(
     songs,
     scrapingAction,
     'body',
@@ -22,13 +20,15 @@ const scrapeSongPages = async (songs) => {
     './rawdata/lyrics.json'
   )
 
+  // const scrapedLyrics = json.readFile('./rawdata/lyrics')
+
   let filteredLyrics = []
   for (let i = 0; i < scrapedLyrics.length; i++) {
     if (scrapedLyrics[i].lyrics !== undefined) {
       filteredLyrics.push(scrapedLyrics[i])
     }
   }
-  json.saveFile('./rawdata/lyrics', lyricsList)
+  json.saveFile('./rawdata/lyrics', filteredLyrics)
 }
 
 scrapeSongPages(songList)
