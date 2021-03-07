@@ -28,7 +28,7 @@ const scrapeSongPages = async (songs) => {
       filteredLyrics.push(scrapedLyrics[i])
     }
   }
-  json.saveFile('./rawdata/lyrics2', lyricsList)
+  json.saveFile('./rawdata/lyrics', lyricsList)
 }
 
 scrapeSongPages(songList)
