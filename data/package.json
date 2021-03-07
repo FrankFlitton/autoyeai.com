@@ -27,5 +27,7 @@
     "lodash": "^4.17.21",
     "cheerio": "^1.0.0-rc.5"
   },
-  "dependencies": {}
+  "dependencies": {
+    "he": "^1.2.0"
+  }
 }

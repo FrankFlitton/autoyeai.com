@@ -43,7 +43,7 @@ const scraper = async (urlList = [], scrapingAction, waitFor = 'body', onlyScrap
           try {
             // Only if page.goto get's no error
             await page.goto(urlList[elem].url, {
-              timeout: 5000
+              timeout: 10000
             })
 
             await page.waitForSelector(waitFor, {

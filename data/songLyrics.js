@@ -11,12 +11,23 @@ const songList = songData.map(song => {
   }
 })
 
+// For testing
+// const songList = [{
+//     name: 'Big Brother',
+//     url: 'https://genius.com/Kanye-west-big-brother-lyrics'
+//   },
+//   {
+//     name: 'Good Night',
+//     url: 'https://genius.com/Kanye-west-good-night-lyrics'
+//   },
+// ]
+
 const scrapeSongPages = async (songs) => {
   const scrapedLyrics = await scraper(
     songs,
     scrapingAction,
     'body',
-    false,
+    true,
     './rawdata/lyrics.json'
   )
 
@@ -28,6 +39,7 @@ const scrapeSongPages = async (songs) => {
       filteredLyrics.push(scrapedLyrics[i])
     }
   }
+
   json.saveFile('./rawdata/lyrics', filteredLyrics)
 }
 

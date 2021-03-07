@@ -1,17 +1,38 @@
 const $ = require('cheerio')
+const he = require('he');
+
+
+const whitespace = function (element) {
+  return element
+    .replace(/\n/g, '<br>\n')
+    .replace(/<br>/g, '\n')
+    .replace(/<(?!\s*br\s*\/?)[^>]+>/gi, ''); // highlights
+}
+const whitespaceAlt = function (element) {
+  return element
+    .replace(/<br>/g, '\n')
+    .replace(/<(?!\s*br\s*\/?)[^>]+>/gi, ''); // highlights
+}
 
 const getLyrics = async function (page) {
   try {
-    let lyrics = $('div[class="lyrics"]', page).text().trim();
+    let lyrics = '';
+    let lyricsHTML = $('div[class="lyrics"]', page).html()
+    if (lyricsHTML) {
+      lyricsHTML = whitespace(lyricsHTML)
+      // lyricsHTML = lyricsHTML.replace(/<(?:.|\n)*?>/gm, '\n');
+      lyrics = he.decode(lyricsHTML) + '';
+    };
+    // let lyrics = $('div[class="lyrics"]', page).html().replace(/<(?:.|\n)*?>/gm, '\n');
+    // let lyrics = whitespace($('div[class="lyrics"]', page)) + 'zzz';
     if (!lyrics) {
       lyrics = ''
       $('div[class^="Lyrics__Container"]', page).each((i, elem) => {
         if ($(elem).text().length !== 0) {
-          let snippet = $(elem).html()
-            .replace(/\n/g, '<br>\n')
-            .replace(/<br>/g, '\n')
-            .replace(/<(?!\s*br\s*\/?)[^>]+>/gi, '');
-          lyrics += $('<textarea/>').html(snippet).text().trim() + '\n\n';
+          let snippet = $(elem).text()
+          snippet = whitespace($(elem).text())
+          lyrics += he.decode(snippet) + ''
+          // lyrics += $('<textarea/>').html(snippet).text().trim() + '\n\n';
         }
       })
     }
@@ -22,7 +43,11 @@ const getLyrics = async function (page) {
   }
 };
 
-const scrapingAction = async function (page, list, url) {
+const scrapingAction = async function (page, list, url, name, elem) {
+  await elem.addStyleTag({
+    content: '*{whitespace: pre-wrap}'
+  })
+  page = await elem.content()
   const lyrics = await getLyrics(page)
   let song = {}
 
