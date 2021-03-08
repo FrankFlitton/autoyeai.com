@@ -1,6 +1,7 @@
 // Focusing of full releases
 // Collaborations, alternate versions, leaks, live sets...
 // maybe revisit for Yhandi, JIKII, DONDA...
+// Need to add Kids See Ghosts, Watch the Throne, etc.
 const nonCanonical = [
   '',
   '2016 G.O.O.D. Fridays',
