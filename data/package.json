@@ -21,14 +21,14 @@
     "url": "https://github.com/FrankFlitton/autoye.ai/issues"
   },
   "homepage": "https://github.com/FrankFlitton/autoye.ai#readme",
-  "devDependencies": {
+  "devDependencies": {},
+  "dependencies": {
     "dotenv": "^8.2.0",
     "axios": "^0.21.1",
     "puppeteer": "^8.0.0",
     "lodash": "^4.17.21",
-    "cheerio": "^1.0.0-rc.5"
-  },
-  "dependencies": {
+    "cheerio": "^1.0.0-rc.5",
+    "csv": "^5.3.2",
     "he": "^1.2.0"
   }
 }
