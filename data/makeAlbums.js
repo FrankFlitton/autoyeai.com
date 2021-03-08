@@ -2,7 +2,7 @@ const _ = require('lodash')
 const json = require('./json')
 const constants = require('./constants.js')
 
-const lyricsDataRaw = json.readFile('rawdata/lyrics')
+const lyricsDataRaw = json.readFile('rawData/lyrics')
 
 function cleanAlbumName(name) {
   stringName = typeof name === 'string' ? name : ''

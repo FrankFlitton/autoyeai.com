@@ -1,4 +1,7 @@
 const $ = require('cheerio')
+const {
+  filter
+} = require('lodash')
 const json = require('./json')
 const scraper = require('./scraper')
 const scrapingAction = require('./scraper/pages/song.js')
@@ -11,27 +14,14 @@ const songList = songData.map(song => {
   }
 })
 
-// For testing
-// const songList = [{
-//     name: 'Big Brother',
-//     url: 'https://genius.com/Kanye-west-big-brother-lyrics'
-//   },
-//   {
-//     name: 'Good Night',
-//     url: 'https://genius.com/Kanye-west-good-night-lyrics'
-//   },
-// ]
-
 const scrapeSongPages = async (songs) => {
   const scrapedLyrics = await scraper(
     songs,
     scrapingAction,
     'body',
-    true,
-    './rawdata/lyrics.json'
+    false,
+    './rawData/lyrics.json'
   )
-
-  // const scrapedLyrics = json.readFile('./rawdata/lyrics')
 
   let filteredLyrics = []
   for (let i = 0; i < scrapedLyrics.length; i++) {
@@ -40,7 +30,7 @@ const scrapeSongPages = async (songs) => {
     }
   }
 
-  json.saveFile('./rawdata/lyrics', filteredLyrics)
+  json.saveFile('./rawData/lyrics', filteredLyrics)
 }
 
 scrapeSongPages(songList)

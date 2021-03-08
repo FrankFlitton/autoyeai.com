@@ -38,5 +38,5 @@ const getAllSongs = async () => {
 
 getAllSongs()
   .then(songs => {
-    json.saveFile('./rawdata/songs', songs)
+    json.saveFile('./rawData/songs', songs)
   })
