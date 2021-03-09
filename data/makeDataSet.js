@@ -129,11 +129,3 @@ const processAlbums = (albumMap) => {
 
 const albumMap = makeAlbums()
 processAlbums(albumMap)
-
-// console.log(albumMap['808s & Heartbreak'][0])
-
-// const testSong = albumMap['Yeezus'][2].lyrics
-// const cleanLyrics = cleanAds(testSong)
-// const tokens = tokenizeLyrics(cleanLyrics)
-// const test = csv.saveCSV('./cleanData/test/test', csv.fromArray(tokens))
-// console.log(test)
