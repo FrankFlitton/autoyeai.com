@@ -1,6 +1,6 @@
 const makeAlbums = require('./makeAlbums')
 const csv = require('./csv')
-const text = require('./text')
+const txt = require('./txt')
 
 const cleanAds = (lyrics) => {
   const rawLyrics = '' + lyrics
@@ -106,23 +106,24 @@ const processAlbums = (albumMap) => {
   }
   csv.saveCSV('./cleanData/master', csv.fromArray(masterRecords))
 
-  // Save text Files
+  // Save txt Files
   const masterTextPile = masterRecords.map(df => df.data).join("\n")
-  text.saveText('./cleanData/masterPile', masterTextPile)
+  txt.saveTxt('./cleanData/masterPile', masterTextPile)
 
   let currentType = 'Intro'
-  let TaggedText = [`\[${currentType}\]`]
+  let TaggedText = []
   for (let i = 0; i < masterRecords.length; i++) {
     const df = masterRecords[i]
     if (currentType !== df.type) {
       currentType = df.type
-      TaggedText.push([`\n\[${currentType.replace(/[0-9]/g, '').trim()}\]`])
+      // TaggedText.push([`\n\[${currentType.replace(/[0-9]/g, '').trim()}\]`])
+      TaggedText.push(`\n`)
     }
 
     TaggedText.push(df.data)
   }
-  const TaggedTextPile = TaggedText.join('\n')
-  text.saveText('./cleanData/masterTagged', TaggedTextPile)
+  const TaggedTextPile = TaggedText.join('\n').replace(/\n\n/gmi, '\n')
+  txt.saveTxt('./cleanData/masterSpaces', TaggedTextPile)
 }
 
 

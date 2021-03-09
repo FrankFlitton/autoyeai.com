@@ -2,14 +2,14 @@ const fs = require('fs')
 const dirname = require('path').dirname
 
 
-const saveText = (fileName, data) => {
+const saveTxt = (fileName, data) => {
   try {
     const dir = dirname(fileName)
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir)
-      saveText(fileName, data)
+      saveTxt(fileName, data)
     } else {
-      fs.writeFileSync(fileName + ".text", data)
+      fs.writeFileSync(fileName + ".txt", data)
     }
     //file written successfully
   } catch (err) {
@@ -17,19 +17,19 @@ const saveText = (fileName, data) => {
   }
 }
 
-const readText = (fileName) => {
+const readTxt = (fileName) => {
   let data = {}
   try {
-    data = fs.readFileSync(fileName + ".text", "utf8")
+    data = fs.readFileSync(fileName + ".txt", "utf8")
   } catch (err) {
     console.error(err)
   }
   return data
 }
 
-const text = {
-  saveText,
-  readText
+const txt = {
+  saveTxt,
+  readTxt
 }
 
-module.exports = text
+module.exports = txt
