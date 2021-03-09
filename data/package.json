@@ -8,8 +8,7 @@
     "getLyrics": "node songLyrics.js",
     "getLyrics:retry": "node songLyricsRetry.js",
     "getLyrics:test": "node songLyricsTest.js",
-    "makeAlbums": "node makeAlbums.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "makeDataSet": "node makeDataSet.js"
   },
   "repository": {
     "type": "git",

@@ -7,7 +7,9 @@ const nonCanonical = [
   '2016 G.O.O.D. Fridays',
   'Boys Don’t Cry',
   'Can’t Tell Me Nothing',
+  'Coach Carter',
   'DONDA: WITH CHILD',
+  'DONDA',
   'Def Poetry Jam',
   'Freshmen Adjustment Vol. 1',
   'Freshmen Adjustment Vol. 2',
@@ -24,8 +26,12 @@ const nonCanonical = [
   'Ray Fridays',
   'The College Dropout: Video Anthology',
   'The Graduate',
+  'The Man With the Iron Fists',
   'Unreleased Songs',
   'VH1 Storytellers',
+  'Welcome to Kanye’s Soul Mix Show',
+  'Untitled Album*',
+  'World Record Holders',
   'Yandhi'
 ]
 
