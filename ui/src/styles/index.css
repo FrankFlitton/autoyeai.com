@@ -11,3 +11,21 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* CSS Reset */
+* {
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* debug */
+* {
+  background: #FF00F011;
+}
+
+header {
+  padding: 0 1em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
