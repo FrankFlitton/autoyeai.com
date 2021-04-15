@@ -1,8 +1,9 @@
 import { useContext } from 'react'
 import styled from 'styled-components'
 import { GeneratorContext } from '../state/generator'
-import KanyeSelector from './kanyeSelector'
 import { Container, Row, Col } from './grid'
+import KanyeActions from './kanyeActions'
+import KanyeSelector from './kanyeSelector'
 
 const KanyeGraphic = styled.div`
   min-width: 200px;
@@ -51,6 +52,7 @@ const KanyeSelectorWrapper = () => {
         </Col>
       </Row>
       <KanyeSelector />
+      <KanyeActions />
     </Container>
   )
 }
