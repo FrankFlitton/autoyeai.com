@@ -7,6 +7,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.App {
+  width: 100%;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -18,14 +22,11 @@ code {
   box-sizing: border-box;
 }
 
-/* debug */
-* {
-  background: #FF00F011;
+.sr-only {
+  display: none;
 }
 
-header {
-  padding: 0 1em;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+/* debug */
+/* * {
+  background: #FF00F011;
+} */

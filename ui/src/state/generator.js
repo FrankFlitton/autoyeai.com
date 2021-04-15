@@ -4,7 +4,7 @@ import { DataSets } from "./data";
 
 const initialState = {
   seed: '',
-  dataSet: DataSets.default,
+  dataSet: DataSets[0],
   payload: '',
   censor: false,
 };

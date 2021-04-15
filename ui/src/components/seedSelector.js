@@ -44,13 +44,15 @@ const SeedSelector = () => {
         </div>
         <div className="input-group">
 
-          {formData.dataSet} <br />
-          { Object.keys(DataSets).map((dataSet) => (
-            <div className="radio-button" key={dataSet}>
-              <label htmlFor={`dataSet-${dataSet}`}> {DataSets[dataSet]} </label>: &nbsp;
-              <input name="dataSet" id={`dataSet-${dataSet}`} type="radio" value={dataSet} onChange={(e) => handleUpdate(e)} />
-            </div>
+          {/* {formData?.dataSet?.title} <br /> */}
+          { DataSets.map((dataSet, i) => (
+              <div className="radio-button" key={dataSet.id}>
+                <label htmlFor={`dataSet-${i}`}> {dataSet.title} </label>: &nbsp;
+                <input name="dataSet" id={`dataSet-${i}`} type="radio" value={i} onChange={(e) => handleUpdate(e)} />
+              </div>
             ))}
+
+
 
         </div>
         <div className="input-group">
