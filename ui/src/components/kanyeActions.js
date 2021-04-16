@@ -1,30 +1,38 @@
 import { useContext, useEffect, useState } from 'react'
 import { GeneratorContext } from '../state/generator'
 import { Row, Col } from './grid'
-import { generate } from '../data/generate'
 
 const KanyeActions = () => {
-  const { dataSet, seed, payload, setPayload } = useContext(GeneratorContext)
-  const [ oldDataSet, setOldDataSet ] = useState('')
+  const {dataSet, seed, setSeed, payload, setPayload} = useContext(GeneratorContext)
+  const [oldDataSet, setOldDataSet] = useState('')
+  const [localPayload, setLocalPayload] = useState('')
 
-  const updatePayload = (char) => {
-    setPayload(payload + char)
+  const webWorker = new Worker('../worker.js', { type: 'module' })
+
+  function updatePayload (char) {
+    setLocalPayload(prevState => prevState + char)
   }
-  const runGenerate = async () => {
-    return await generate('default', null, updatePayload)
+  const runGenerate = () => {
+    webWorker.postMessage("Generate Seed")
+    webWorker.postMessage("Generate Data")
+    webWorker.addEventListener("message", event => {
+      if (!event.data) {
+        return;
+      } else if (event.data.includes('Text Generation Finished|')) {
+        setPayload(event.data.split('Text Generation Finished|')[1])
+
+      } else if (event.data.includes('Generate Seed|')) {
+        setSeed(event.data.split('Generate Seed|')[1])
+
+      } else {
+        updatePayload(event.data)
+      }
+    });
   }
 
   useEffect(() => {
-    // Load New Model
-    console.log('kick-off')
-
-
-    // if (oldDataSet !== dataSet.id) generate(dataSet.id, seed, updatePayload)
     if (oldDataSet !== dataSet.id) {
-      runGenerate().then((t) => {
-        console.log('done!', t)
-        setPayload(t)
-      })
+      runGenerate()
     }
     setOldDataSet(dataSet.id)
 
@@ -43,6 +51,12 @@ const KanyeActions = () => {
         Loading Feedback and Action
       </Col>
       <Col cols={12}>
+        seed: { seed }
+      </Col>
+      <Col cols={12} sm={6}>
+        localPayload: { localPayload }
+      </Col>
+      <Col cols={12} sm={6}>
         payload: { payload }
       </Col>
     </Row>
