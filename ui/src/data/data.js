@@ -179,11 +179,27 @@ export class TextData {
   * @returns {[string, number[]} The string and index representation of the
   *   same slice.
   */
-  getRandomSlice() {
-    const startIndex =
-      Math.round(Math.random() * (this.textLen_ - this.sampleLen_ - 1));
+  getRandomSlice(i) {
+    const startIndex = !!i
+      ? i
+      : Math.round(
+          Math.random() * (this.textLen_ - this.sampleLen_ - 1)
+        );
     const textSlice = this.slice_(startIndex, startIndex + this.sampleLen_);
     return [textSlice, this.textToIndices(textSlice)];
+  }
+
+  getRandomLineIndex() {
+    const textLines = this.textString_.split('\n')
+    let startLine = Math.round(Math.random() * (textLines.length - 5))
+
+    let startText = `${textLines[startLine]}`
+    return this.textString_.match(startText).index
+    // while (textSlice.length < 100) {
+    //   startLine++
+    //   textSlice += `\n${textLines[startLine]}`
+    // }
+    // return [textSlice, this.textToIndices(textSlice)];
   }
 
   /**
