@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import { GeneratorContext } from '../state/generator'
 import { Row, Col } from './grid'
+import LyricsViewer from './lyricsViewer'
 
 const KanyeActions = () => {
   const {dataSet, seed, setSeed, payload, setPayload} = useContext(GeneratorContext)
@@ -54,7 +55,10 @@ const KanyeActions = () => {
         seed: { seed }
       </Col>
       <Col cols={12} sm={6}>
-        localPayload: { localPayload }
+        localPayload: <br />
+      </Col>
+      <Col cols={12} sm={6}>
+        <LyricsViewer value={seed + localPayload} />
       </Col>
       <Col cols={12} sm={6}>
         payload: { payload }
