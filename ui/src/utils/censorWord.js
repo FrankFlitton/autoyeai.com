@@ -12,15 +12,16 @@ const censorList = {
 }
 
 const censorWord = (word) => {
-  if (censorList.hasOwnProperty(word)) {
-    return censorList[word]
+  const normalizedWord = word.toLowerCase().trim()
+  if (censorList.hasOwnProperty(normalizedWord)) {
+    return censorList[normalizedWord]
   }
 
-  const censor = word
+  const censor = normalizedWord
   const curses = Object.keys(censorList)
   for (let curse of curses) {
-    if (word.includes(curse)) {
-      return word.replace(curse, censorList[curse]);
+    if (normalizedWord.includes(curse)) {
+      return normalizedWord.replace(curse, censorList[curse]);
     }
   }
 
