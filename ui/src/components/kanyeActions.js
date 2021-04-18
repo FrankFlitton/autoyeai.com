@@ -115,6 +115,11 @@ const KanyeActions = () => {
     return correctedWord
   }
 
+  function typedText (correctedText, localPayload) {
+    const lastWord = localPayload[localPayload.length - 1]
+    return [...correctedText, ...[lastWord]]
+  }
+
   useEffect(() => {
 
     if (seed === '') runGenerate()
@@ -124,7 +129,7 @@ const KanyeActions = () => {
     // }
 
   // eslint-disable-next-line
-  }, [seed, localPayload, isFinished])
+  }, [seed])
 
   return (
     <Row>
@@ -146,7 +151,7 @@ const KanyeActions = () => {
       <Col cols={12} sm={6}> {
         correctedText === null
           ? 'Broken'
-          : <LyricsViewer value={ correctedText } />
+          : <LyricsViewer value={ typedText(correctedText, localPayload) } />
       }
       </Col>
       <Col cols={12} sm={6}>
