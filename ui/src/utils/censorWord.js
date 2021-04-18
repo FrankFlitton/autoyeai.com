@@ -12,17 +12,25 @@ const censorList = {
 }
 
 const censorWord = (word) => {
+  if (typeof word === 'string' && word === '') return word
+
+  const isTitleCase = word.charAt(0).match(/[A-Z]/g)
   const normalizedWord = word.toLowerCase().trim()
   if (censorList.hasOwnProperty(normalizedWord)) {
     return censorList[normalizedWord]
   }
 
-  const censor = normalizedWord
+  let censor = normalizedWord
   const curses = Object.keys(censorList)
   for (let curse of curses) {
     if (normalizedWord.includes(curse)) {
-      return normalizedWord.replace(curse, censorList[curse]);
+      censor = normalizedWord.replace(curse, censorList[curse]);
+      break;
     }
+  }
+
+  if (!!isTitleCase) {
+    censor = censor.charAt(0).toUpperCase() + censor.slice(1)
   }
 
   return censor

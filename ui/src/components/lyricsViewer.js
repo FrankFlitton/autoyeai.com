@@ -1,4 +1,7 @@
+import { useContext } from 'react'
 import styled from 'styled-components'
+import { GeneratorContext } from '../state/generator'
+import censorWord from '../utils/censorWord'
 
 const LyricSheet = styled.div`
   width: 100%;
@@ -12,6 +15,11 @@ const LyricSheet = styled.div`
 `
 
 const LyricsViewer = ({value}) => {
+  const {censor} = useContext(GeneratorContext)
+
+  function censorText (word) {
+    return censorWord(word)
+  }
   if (!value) {
     return (<LyricSheet>No Data!</LyricSheet>)
   }
@@ -19,7 +27,13 @@ const LyricsViewer = ({value}) => {
     <LyricSheet>
       { value.length > 1
         ? value.map((word, i) => (
-          <span key={word + i}>{ word === '\n' ? <><br /><br /></>  : word } </span>
+          <span key={word + i}>{
+            word === '\n'
+              ? <><br /><br /></>
+              : censor
+                ? censorText(word)
+                : word
+            } </span>
         ))
         : <span>'Err'</span>
       }

@@ -1,12 +1,11 @@
 import { useContext, useEffect, useState } from 'react'
 import { GeneratorContext } from '../state/generator'
 import speller from '../utils/spellcheck'
-import censorWord from '../utils/censorWord'
 import { Row, Col } from './grid'
 import LyricsViewer from './lyricsViewer'
 
 const KanyeActions = () => {
-  const {seed, setSeed, censor} = useContext(GeneratorContext)
+  const {seed, setSeed} = useContext(GeneratorContext)
   const [localPayload, setLocalPayload] = useState([''])
   const [correctedText, setCorrectedText] = useState([''])
   const [isSpellerTrained, setIsSpellerTrained] = useState(false)
@@ -104,10 +103,6 @@ const KanyeActions = () => {
     } else {
       correctedWord = spellcheck.correct(word)
       if (hasPunctuation) correctedWord += hasPunctuation[0]
-    }
-
-    if (!censor) {
-      correctedWord = censorWord(correctedWord)
     }
     if (!!isTitleCase) {
       correctedWord = correctedWord.charAt(0).toUpperCase() + correctedWord.slice(1)
