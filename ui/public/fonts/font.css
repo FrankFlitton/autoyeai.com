@@ -1,0 +1,12 @@
+@font-face {
+  font-family: 'BiPolar';
+  src: url('/fonts/Bi_polarHandwriting-Regular.eot');
+  src: url('/fonts/Bi_polarHandwriting-Regular.eot?#iefix') format('embedded-opentype'),
+      url('/fonts/Bi_polarHandwriting-Regular.woff2') format('woff2'),
+      url('/fonts/Bi_polarHandwriting-Regular.woff') format('woff'),
+      url('/fonts/Bi_polarHandwriting-Regular.ttf') format('truetype'),
+      url('/fonts/Bi_polarHandwriting-Regular.svg#Bi_polarHandwriting-Regular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
