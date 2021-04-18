@@ -1,21 +1,8 @@
-// import { useEffect } from 'react'
+import { useEffect } from 'react'
 import styled from 'styled-components'
-
-// const Note = styled.textarea`
-//   width: 100%;
-//   /* appearance: none; */
-//   display: block;
-//   border: 0;
-//   /* font-family: 'BiPolar'; */
-//   font-weight: bold;
-//   outline: 0;
-//   font-size: 1.68em;
-//   line-height: 1.3em;
-// `
 
 const LyricSheet = styled.div`
   width: 100%;
-  /* appearance: none; */
   display: block;
   border: 0;
   /* font-family: 'BiPolar'; */
@@ -24,26 +11,30 @@ const LyricSheet = styled.div`
   font-size: 1.68em;
   line-height: 1.3em;
 `
-const LyricLine = styled.p``
+// const LyricLine = styled.span`
+//   &:hover {
+//     background: black;
+//     color: white;
+//   }
+// `
 
 const LyricsViewer = ({value}) => {
   // useEffect(() => {
-  //   autoGrow()
+  //   console.log('LyricsViewer', value)
   // }, [value])
 
-  // function autoGrow () {
-  //   const element = document.getElementById('note')
-
-  //   element.style.height = "5px";
-  //   element.style.height = (element.scrollHeight)+"px";
-  // }
-
+  if (!value) {
+    return (<LyricSheet>No Data!</LyricSheet>)
+  }
   return (
-    // <Note id="note" defaultValue={value} />
     <LyricSheet>
-      { value && value.split('\n').map((line, i) => (
-        <LyricLine key={i + line}>{ line }</LyricLine>
-      )) }
+      { value.length > 1
+        ? value.map((word, i) => (
+          <span key={word + i}>{ word === '\n' ? <br /> : word } </span>
+        ))
+        : 'Errr'
+      }
+      {/* { JSON.stringify(value) } */}
     </LyricSheet>
   )
 }

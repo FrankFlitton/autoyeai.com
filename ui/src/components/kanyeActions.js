@@ -7,25 +7,33 @@ import LyricsViewer from './lyricsViewer'
 
 const KanyeActions = () => {
   const {seed, setSeed, censor} = useContext(GeneratorContext)
-  const [localPayload, setLocalPayload] = useState('')
-  const [correctedText, setCorrectedText] = useState('')
+  const [localPayload, setLocalPayload] = useState([''])
+  const [correctedText, setCorrectedText] = useState([''])
   const [isSpellerTrained, setIsSpellerTrained] = useState(false)
   const [isFinished, setIsFinished] = useState(false)
 
   const webWorker = new Worker('../worker.js', { type: 'module' })
 
   function updatePayload (char) {
-    setLocalPayload(prevState => prevState + char)
+    setLocalPayload((prevState) => {
+      if (char === '\n') {
+        return [...prevState, ...[char, '']]
+      } else if (char === ' ') {
+        return [...prevState, ...['']]
+      } else {
+        const newState = [...prevState]
+        const lastToken = newState.pop()
+        return [...newState, ...[lastToken + char]]
+      }
+    })
   }
 
   const spellcheck = speller
 
   const runGenerate = () => {
-    // webWorker.postMessage("Generate Seed")
-    // setTimeout(() => {
     webWorker.postMessage("Generate Data")
     setIsFinished(false)
-    // }, 0)
+
     webWorker.addEventListener("message", event => {
       if (!event.data) {
         return;
@@ -37,8 +45,11 @@ const KanyeActions = () => {
           // correctText(data)
         } else if (event.data.includes('Generate Seed|')) {
           const data = event.data.split('Generate Seed|')[1]
-          if (data) setSeed(data)
-          console.log('seed', data)
+          if (!!data.length) {
+            setSeed(data)
+            const seedTokens = data.split(/[\n ]/gi)
+            setLocalPayload(seedTokens)
+          }
 
         } else if (event.data.includes('TextData|')) {
           if (!isSpellerTrained) {
@@ -53,57 +64,64 @@ const KanyeActions = () => {
         updatePayload(event.data)
       }
     })
+    return;
   }
 
-  const correctText = (sentence) => {
-    const seedStem = seed ? seed : ''
-    sentence = sentence ? seedStem + sentence + '' : seedStem
-    const lines = sentence.split('\n') // preserve lines
-    const words = lines.map(s => s.split(' '))
-    const correctedWords = words.map((line) => {
-      return line.map((word) => {
-        const isNumber = word.match(/[0-9]/)
-        if (isNumber) return word
+  const correctText = (tokens) => {
+    if (tokens === undefined) return;
+    if (tokens.length <= 1 ) {
+      setCorrectedText([tokens])
+      return;
+    }
 
-        const isTitleCase = word.charAt(0).match(/[A-Z]/g)
-        const hasPunctuation = word.charAt(word.length - 1).match(/[,?!]/g)
+    const fixWord = (word) => {
+      if (word === '\n') return word
+      if (word.match(/[0-9]/)) return word
+      if (word.length <= 1 && word === 'i') {
+        return word.toUpperCase()
+      }
 
-        let correctedWord = word
+      const isTitleCase = word.charAt(0).match(/[A-Z]/g)
+      const hasPunctuation = word.charAt(word.length - 1).match(/[,?!]/g)
 
-        if (spellcheck.nWords.hasOwnProperty(word.toLowerCase())) {
-          correctedWord = word
-        } else {
-          correctedWord = spellcheck.correct(word)
-          if (hasPunctuation) correctedWord += hasPunctuation[0]
-        }
+      let correctedWord = word
 
-        if (!censor) {
-          correctedWord = censorWord(correctedWord)
-        }
-        if (!!isTitleCase) {
-          correctedWord = correctedWord.charAt(0).toUpperCase() + correctedWord.slice(1)
-        }
-        return correctedWord
-      }).join(' ')
-    }).join('\n')
-      .replace('\ni\n', '\n')
-      .replace('\ni \n', '\n')
-      .replace(',,', ',')
-      .replace(/i /g, 'I ')
+      if (spellcheck.nWords.hasOwnProperty(word.toLowerCase())) {
+        correctedWord = word
+      } else {
+        correctedWord = spellcheck.correct(word)
+        if (hasPunctuation) correctedWord += hasPunctuation[0]
+      }
 
-    setCorrectedText(correctedWords)
+      if (!censor) {
+        correctedWord = censorWord(correctedWord)
+      }
+      if (!!isTitleCase) {
+        correctedWord = correctedWord.charAt(0).toUpperCase() + correctedWord.slice(1)
+      }
+      return correctedWord
+    }
+
+    const newData = [...tokens]
+    const word = newData.pop()
+    const correctedWord = fixWord(word)
+
+    console.log('tokens:', newData, '\nfix', correctedWord)
+
+    setCorrectedText([...newData, ...[correctedWord]])
+    return;
   }
 
   useEffect(() => {
 
     if (seed === '') runGenerate()
 
-    if ((correctedText.length < (seed + localPayload).length + 3) && !isFinished) {
+    if (seed !== '' && !isFinished) {
       correctText(localPayload)
     }
 
   // eslint-disable-next-line
-  }, [seed, localPayload, correctedText, isFinished])
+  }, [seed, localPayload, isFinished])
 
   return (
     <Row>
@@ -122,8 +140,11 @@ const KanyeActions = () => {
       <Col cols={12} sm={6}>
         localPayload: <br />
       </Col>
-      <Col cols={12} sm={6}>
-        <LyricsViewer value={ correctedText } />
+      <Col cols={12} sm={6}> {
+        correctedText === null
+          ? 'Broken'
+          : <LyricsViewer value={ correctedText } />
+      }
       </Col>
       <Col cols={12} sm={6}>
         payload: { localPayload }
