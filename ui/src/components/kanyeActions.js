@@ -6,8 +6,7 @@ import { Row, Col } from './grid'
 import LyricsViewer from './lyricsViewer'
 
 const KanyeActions = () => {
-  const {dataSet, seed, setSeed, payload, setPayload, censor} = useContext(GeneratorContext)
-  const [oldDataSet, setOldDataSet] = useState('')
+  const {seed, setSeed, payload, censor} = useContext(GeneratorContext)
   const [localPayload, setLocalPayload] = useState('')
   const [correctedText, setCorrectedText] = useState('')
   const [isSpellerTrained, setIsSpellerTrained] = useState(false)
@@ -22,44 +21,50 @@ const KanyeActions = () => {
   const spellcheck = speller
 
   const runGenerate = () => {
-    webWorker.postMessage("Generate Seed")
-    setTimeout(() => {
-      webWorker.postMessage("Generate Data")
-    }, 100)
+    // webWorker.postMessage("Generate Seed")
+    // setTimeout(() => {
+    webWorker.postMessage("Generate Data")
+    setIsFinished(false)
+    // }, 0)
     webWorker.addEventListener("message", event => {
       if (!event.data) {
         return;
-      } else if (event.data.includes('Text Generation Finished|')) {
-        const data = event.data.split('Text Generation Finished|')[1]
-        setIsFinished(true)
-        setPayload(data)
-        updatePayload(data)
-        correctText(seed + data)
+      } else if (event.data.includes('|')) {
+        if (event.data.includes('Text Generation Finished|')) {
+          const data = event.data.split('Text Generation Finished|')[1]
+          setIsFinished(true)
+          updatePayload(data)
+          // correctText(data)
+        } else if (event.data.includes('Generate Seed|')) {
+          const data = event.data.split('Generate Seed|')[1]
+          if (data) setSeed(data)
+          console.log('seed', data)
 
-      } else if (event.data.includes('Generate Seed|')) {
-        setSeed(event.data.split('Generate Seed|')[1])
-
-      } else if (event.data.includes('TextData|')) {
-        if (!isSpellerTrained) {
-          const data = event.data.split('TextData|')[1]
-          if (data.length) {
-            spellcheck.train(data)
-            setIsSpellerTrained(true)
+        } else if (event.data.includes('TextData|')) {
+          if (!isSpellerTrained) {
+            const data = event.data.split('TextData|')[1]
+            if (data.length) {
+              spellcheck.train(data)
+              setIsSpellerTrained(true)
+            }
           }
         }
-
       } else {
         updatePayload(event.data)
       }
-    });
+    })
   }
 
   const correctText = (sentence) => {
-    sentence = sentence ? sentence + '' : ''
+    const seedStem = seed ? seed : ''
+    sentence = sentence ? seedStem + sentence + '' : seedStem
     const lines = sentence.split('\n') // preserve lines
     const words = lines.map(s => s.split(' '))
     const correctedWords = words.map((line) => {
       return line.map((word) => {
+        const isNumber = word.match(/[0-9]/)
+        if (isNumber) return word
+
         const isTitleCase = word.charAt(0).match(/[A-Z]/g)
         const hasPunctuation = word.charAt(word.length - 1).match(/[,?!]/g)
 
@@ -82,23 +87,23 @@ const KanyeActions = () => {
       }).join(' ')
     }).join('\n')
       .replace('\ni\n', '\n')
+      .replace('\ni \n', '\n')
+      .replace(',,', ',')
       .replace(/i /g, 'I ')
 
     setCorrectedText(correctedWords)
   }
 
   useEffect(() => {
-    if (oldDataSet !== dataSet.id) {
-      runGenerate()
-    }
-    setOldDataSet(dataSet.id)
 
-    if (correctedText.length < (seed + localPayload).length + 2 && !isFinished) {
-      correctText(seed + localPayload)
+    if (seed === '') runGenerate()
+
+    if ((correctedText.length < (seed + localPayload).length + 3) && !isFinished) {
+      correctText(localPayload)
     }
 
   // eslint-disable-next-line
-  }, [dataSet, seed, oldDataSet, localPayload, correctedText, isFinished])
+  }, [seed, localPayload, correctedText, isFinished])
 
   return (
     <Row>
@@ -118,10 +123,10 @@ const KanyeActions = () => {
         localPayload: <br />
       </Col>
       <Col cols={12} sm={6}>
-        <LyricsViewer value={correctedText} />
+        <LyricsViewer value={ correctedText } />
       </Col>
       <Col cols={12} sm={6}>
-        payload: { payload }
+        payload: { localPayload }
       </Col>
     </Row>
   )
