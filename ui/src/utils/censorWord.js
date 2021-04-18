@@ -14,7 +14,7 @@ const censorWord = (word) => {
     return censorList[word]
   }
 
-  const censor = ''
+  const censor = word
   const curses = Object.keys(censorList)
   for (let curse of curses) {
     if (word.includes(curse)) {

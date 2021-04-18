@@ -11,6 +11,7 @@ const KanyeActions = () => {
   const [localPayload, setLocalPayload] = useState('')
   const [correctedText, setCorrectedText] = useState('')
   const [isSpellerTrained, setIsSpellerTrained] = useState(false)
+  const [isFinished, setIsFinished] = useState(false)
 
   const webWorker = new Worker('../worker.js', { type: 'module' })
 
@@ -30,6 +31,7 @@ const KanyeActions = () => {
         return;
       } else if (event.data.includes('Text Generation Finished|')) {
         const data = event.data.split('Text Generation Finished|')[1]
+        setIsFinished(true)
         setPayload(data)
         updatePayload(data)
         correctText(seed + data)
@@ -58,16 +60,23 @@ const KanyeActions = () => {
     const words = lines.map(s => s.split(' '))
     const correctedWords = words.map((line) => {
       return line.map((word) => {
-        const isTitleCase = word.match(/A-Z/g)
-        if (spellcheck.nWords.hasOwnProperty(word)) {
-          return word
+        const isTitleCase = word.charAt(0).match(/[A-Z]/g)
+        const hasPunctuation = word.charAt(word.length - 1).match(/[,?!]/g)
+
+        let correctedWord = word
+
+        if (spellcheck.nWords.hasOwnProperty(word.toLowerCase())) {
+          correctedWord = word
+        } else {
+          correctedWord = spellcheck.correct(word)
+          if (hasPunctuation) correctedWord += hasPunctuation[0]
         }
-        let correctedWord = spellcheck.correct(word)
+
         if (!censor) {
           correctedWord = censorWord(correctedWord)
         }
         if (!!isTitleCase) {
-          correctedWord = correctedWord[0].toUpperCase() + correctedWord.slice(1)
+          correctedWord = correctedWord.charAt(0).toUpperCase() + correctedWord.slice(1)
         }
         return correctedWord
       }).join(' ')
@@ -84,12 +93,12 @@ const KanyeActions = () => {
     }
     setOldDataSet(dataSet.id)
 
-    if (correctedText.length < (seed + localPayload).length + 2) {
+    if (correctedText.length < (seed + localPayload).length + 2 && !isFinished) {
       correctText(seed + localPayload)
     }
 
   // eslint-disable-next-line
-  }, [dataSet, seed, oldDataSet, localPayload, correctedText])
+  }, [dataSet, seed, oldDataSet, localPayload, correctedText, isFinished])
 
   return (
     <Row>
