@@ -16,6 +16,7 @@ addEventListener("message", async e => { // eslint-disable-line no-restricted-gl
     const [t, m] = await loadData(modelName)
     textData = t
     model = m
+    postMessage(`TextData|${t.textString_}`)
     return;
   }
 

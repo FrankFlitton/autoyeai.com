@@ -43,6 +43,7 @@ export function GeneratorProvider ({ children }) {
     seed: state.seed,
     dataSet: state.dataSet,
     payload: state.payload,
+    censor: state.censor,
     setSeed: value => {
       dispatch({ type: actions.SET_SEED, value });
     },

@@ -6,7 +6,7 @@ let speller = {
 // A function that trains the language model with the words in the supplied text.
 // Multiple invocation of this function can extend the training of the model.
 speller.train = function (text) {
-	var word, m, r = /[a-z]+/g;
+	var word, m, r = /[a-z']+/g;
 	text = text.toLowerCase();
 	while ((m = r.exec(text))) {
 		word = m[0];
@@ -53,7 +53,8 @@ speller.max = function (candidates) {
 	return Math.max.apply(null, arr);
 };
 
-const letters = "abcdefghijklmnopqrstuvwxyz".split("");
+// eslint-disable-next-line
+const letters = "abcdefghijklmnopqrstuvwxyz''".split("");
 
 // A function that returns the set of possible corrections of the specified word.
 // The edits can be deletions, insertions, alterations or transpositions.
@@ -67,12 +68,14 @@ speller.edits = function (word) {
 	    results.push(word.slice(0, i) + word.slice(i+1, i+2) + word.slice(i, i+1) + word.slice(i+2));
 	// alteration
 	for (i=0; i < word.length; i++)
-	    speller.letters.forEach(function (l) {
+			// eslint-disable-next-line
+	    letters.forEach(function (l) {
 	        results.push(word.slice(0, i) + l + word.slice(i+1));
 		});
 	// insertion
 	for (i=0; i <= word.length; i++)
-	    speller.letters.forEach(function (l) {
+			// eslint-disable-next-line
+	    letters.forEach(function (l) {
 	        results.push(word.slice(0, i) + l + word.slice(i));
 		});
 	return results;

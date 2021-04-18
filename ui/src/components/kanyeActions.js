@@ -1,34 +1,81 @@
 import { useContext, useEffect, useState } from 'react'
 import { GeneratorContext } from '../state/generator'
+import speller from '../utils/spellcheck'
+import censorWord from '../utils/censorWord'
 import { Row, Col } from './grid'
 import LyricsViewer from './lyricsViewer'
 
 const KanyeActions = () => {
-  const {dataSet, seed, setSeed, payload, setPayload} = useContext(GeneratorContext)
+  const {dataSet, seed, setSeed, payload, setPayload, censor} = useContext(GeneratorContext)
   const [oldDataSet, setOldDataSet] = useState('')
   const [localPayload, setLocalPayload] = useState('')
+  const [correctedText, setCorrectedText] = useState('')
+  const [isSpellerTrained, setIsSpellerTrained] = useState(false)
 
   const webWorker = new Worker('../worker.js', { type: 'module' })
 
   function updatePayload (char) {
     setLocalPayload(prevState => prevState + char)
   }
+
+  const spellcheck = speller
+
   const runGenerate = () => {
     webWorker.postMessage("Generate Seed")
-    webWorker.postMessage("Generate Data")
+    setTimeout(() => {
+      webWorker.postMessage("Generate Data")
+    }, 100)
     webWorker.addEventListener("message", event => {
       if (!event.data) {
         return;
       } else if (event.data.includes('Text Generation Finished|')) {
-        setPayload(event.data.split('Text Generation Finished|')[1])
+        const data = event.data.split('Text Generation Finished|')[1]
+        setPayload(data)
+        updatePayload(data)
+        correctText(seed + data)
 
       } else if (event.data.includes('Generate Seed|')) {
         setSeed(event.data.split('Generate Seed|')[1])
+
+      } else if (event.data.includes('TextData|')) {
+        if (!isSpellerTrained) {
+          const data = event.data.split('TextData|')[1]
+          if (data.length) {
+            spellcheck.train(data)
+            setIsSpellerTrained(true)
+          }
+        }
 
       } else {
         updatePayload(event.data)
       }
     });
+  }
+
+  const correctText = (sentence) => {
+    sentence = sentence ? sentence + '' : ''
+    const lines = sentence.split('\n') // preserve lines
+    const words = lines.map(s => s.split(' '))
+    const correctedWords = words.map((line) => {
+      return line.map((word) => {
+        const isTitleCase = word.match(/A-Z/g)
+        if (spellcheck.nWords.hasOwnProperty(word)) {
+          return word
+        }
+        let correctedWord = spellcheck.correct(word)
+        if (!censor) {
+          correctedWord = censorWord(correctedWord)
+        }
+        if (!!isTitleCase) {
+          correctedWord = correctedWord[0].toUpperCase() + correctedWord.slice(1)
+        }
+        return correctedWord
+      }).join(' ')
+    }).join('\n')
+      .replace('\ni\n', '\n')
+      .replace(/i /g, 'I ')
+
+    setCorrectedText(correctedWords)
   }
 
   useEffect(() => {
@@ -37,8 +84,12 @@ const KanyeActions = () => {
     }
     setOldDataSet(dataSet.id)
 
+    if (correctedText.length < (seed + localPayload).length + 2) {
+      correctText(seed + localPayload)
+    }
+
   // eslint-disable-next-line
-  }, [dataSet, seed, oldDataSet])
+  }, [dataSet, seed, oldDataSet, localPayload, correctedText])
 
   return (
     <Row>
@@ -58,7 +109,7 @@ const KanyeActions = () => {
         localPayload: <br />
       </Col>
       <Col cols={12} sm={6}>
-        <LyricsViewer value={seed + localPayload} />
+        <LyricsViewer value={correctedText} />
       </Col>
       <Col cols={12} sm={6}>
         payload: { payload }
