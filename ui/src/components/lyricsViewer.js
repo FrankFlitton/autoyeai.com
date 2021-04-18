@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import styled from 'styled-components'
 
 const LyricSheet = styled.div`
@@ -11,18 +10,8 @@ const LyricSheet = styled.div`
   font-size: 1.68em;
   line-height: 1.3em;
 `
-// const LyricLine = styled.span`
-//   &:hover {
-//     background: black;
-//     color: white;
-//   }
-// `
 
 const LyricsViewer = ({value}) => {
-  // useEffect(() => {
-  //   console.log('LyricsViewer', value)
-  // }, [value])
-
   if (!value) {
     return (<LyricSheet>No Data!</LyricSheet>)
   }
@@ -30,11 +19,10 @@ const LyricsViewer = ({value}) => {
     <LyricSheet>
       { value.length > 1
         ? value.map((word, i) => (
-          <span key={word + i}>{ word === '\n' ? <br /> : word } </span>
+          <span key={word + i}>{ word === '\n' ? <><br /><br /></>  : word } </span>
         ))
-        : 'Errr'
+        : <span>'Err'</span>
       }
-      {/* { JSON.stringify(value) } */}
     </LyricSheet>
   )
 }
