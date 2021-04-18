@@ -6,7 +6,7 @@ import { Row, Col } from './grid'
 import LyricsViewer from './lyricsViewer'
 
 const KanyeActions = () => {
-  const {seed, setSeed, payload, censor} = useContext(GeneratorContext)
+  const {seed, setSeed, censor} = useContext(GeneratorContext)
   const [localPayload, setLocalPayload] = useState('')
   const [correctedText, setCorrectedText] = useState('')
   const [isSpellerTrained, setIsSpellerTrained] = useState(false)
