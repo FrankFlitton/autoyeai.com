@@ -6,7 +6,7 @@ const initialState = {
   seed: '',
   dataSet: DataSets[0],
   payload: '',
-  censor: false,
+  censor: true,
 };
 
 const actions = {
@@ -52,6 +52,9 @@ export function GeneratorProvider ({ children }) {
     },
     setPayload: value => {
       dispatch({ type: actions.SET_PAYLOAD, value });
+    },
+    setCensor: value => {
+      dispatch({ type: actions.SET_CENSOR, value });
     },
     reset: () => {
       dispatch({ type: actions.RESET });

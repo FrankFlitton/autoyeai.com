@@ -35,8 +35,16 @@ const AlbumButton = styled.button`
   }
 `;
 
+const CensorButton = styled.button`
+  padding: 1em;
+  background: black;
+  color: white;
+  border: 0;
+  outline: 0;
+`
+
 const KanyeSelector = () => {
-  const { dataSet, setDataSet } = useContext(GeneratorContext)
+  const { dataSet, setDataSet, censor, setCensor } = useContext(GeneratorContext)
 
   const handleClick = (e) => {
     const index = parseInt(e.target.id.split('-')[1])
@@ -64,6 +72,9 @@ const KanyeSelector = () => {
             </AlbumButton>
           </Col>
         ))}
+        <Col cols={12} justify={'space-around'}>
+          <CensorButton onClick={() => setCensor(!censor)}>CalmYe Mode {censor ? 'Engaged' : 'Disengaged'}</CensorButton>
+        </Col>
       </Row>
   )
 }
