@@ -12,8 +12,6 @@ const KanyeActions = () => {
   const [isSpellerTrained, setIsSpellerTrained] = useState(false)
   const [isFinished, setIsFinished] = useState(false)
 
-  const webWorker = new Worker('../worker.js', { type: 'module' })
-
   function updatePayload (char) {
     setLocalPayload((prevState) => {
       if (char === '\n') {
@@ -31,6 +29,8 @@ const KanyeActions = () => {
   const spellcheck = speller
 
   const runGenerate = () => {
+    const webWorker = new Worker('../worker.js', { type: 'module' })
+
     webWorker.postMessage("Generate Data")
     setIsFinished(false)
 
@@ -42,6 +42,7 @@ const KanyeActions = () => {
           const data = event.data.split('Text Generation Finished|')[1]
           setIsFinished(true)
           updatePayload(data)
+          webWorker.terminate()
           // correctText(data)
         } else if (event.data.includes('Generate Seed|')) {
           const data = event.data.split('Generate Seed|')[1]
