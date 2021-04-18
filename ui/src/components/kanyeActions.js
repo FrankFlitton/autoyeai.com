@@ -27,7 +27,8 @@ const KanyeActions = () => {
         return [...newState, ...[lastToken + char]]
       }
     })
-    if (char.match(/[ \n]/g) && prevWord !== '') {
+    if (isFinished) prevWord = localPayload[localPayload.length - 1]
+    if (isFinished || (char.match(/[ \n]/g) && prevWord !== '')) {
       setCorrectedText((prevState) => {
         return char === '\n'
           ? [...prevState, ...[fixWord(prevWord), '\n']]
@@ -50,8 +51,8 @@ const KanyeActions = () => {
       } else if (event.data.includes('|')) {
         if (event.data.includes('Text Generation Finished|')) {
           const data = event.data.split('Text Generation Finished|')[1]
-          updatePayload(data)
           setIsFinished(true)
+          updatePayload(data)
           webWorker.terminate()
           // correctText(data)
         } else if (event.data.includes('Generate Seed|')) {
