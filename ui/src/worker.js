@@ -17,7 +17,7 @@ addEventListener("message", async e => { // eslint-disable-line no-restricted-gl
     textData = t
     model = m
     postMessage(`TextData|${t.textString_}`)
-    return;
+    return t;
   }
 
   if (!e) return;
@@ -29,7 +29,7 @@ addEventListener("message", async e => { // eslint-disable-line no-restricted-gl
       seed = getSeed('', textData)
       postMessage('Generate Seed|' + seed[0])
     } else {
-      await getData()
+      textData = await getData()
       seed = getSeed('', textData)
     }
   }

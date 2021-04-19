@@ -3,10 +3,14 @@ const makeSeed = (seed, textData) => {
   let seedSentence;
   let seedSentenceIndices;
   if (seed.length === 0) {
+    let lineIndex = null
+    try {
+      lineIndex = textData.getRandomLineIndex()
+    } catch (e) {
+      console.error(e)
+    }
     // Seed sentence is not specified yet. Get it from the data.
-    [seedSentence, seedSentenceIndices] = textData.getRandomSlice(
-      textData.getRandomLineIndex()
-      )
+    [seedSentence, seedSentenceIndices] = textData.getRandomSlice(lineIndex)
     seed = seedSentence
   } else {
     seedSentence = seed

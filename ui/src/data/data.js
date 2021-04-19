@@ -189,17 +189,12 @@ export class TextData {
     return [textSlice, this.textToIndices(textSlice)];
   }
 
-  getRandomLineIndex() {
-    const textLines = this.textString_.split('\n')
-    let startLine = Math.round(Math.random() * (textLines.length - 5))
+  getRandomLineIndex () {
+    const textLines = this.textString_.split('\n').length - 5
+    let startLine = Math.round(Math.random() * textLines)
 
     let startText = `${textLines[startLine]}`
     return this.textString_.match(startText).index
-    // while (textSlice.length < 100) {
-    //   startLine++
-    //   textSlice += `\n${textLines[startLine]}`
-    // }
-    // return [textSlice, this.textToIndices(textSlice)];
   }
 
   /**

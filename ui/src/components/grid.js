@@ -40,6 +40,10 @@ const offset = (col, vw) => {
   }
 }
 
+const AppContainer = styled.div`
+  width: 100%;
+`
+
 const Container = styled.div`
   width: 100%;
   max-width: ${props => props.fluid ? '100%' : sizes.md};
@@ -90,6 +94,10 @@ const Col = styled.div`
   }
 
   ${props => props.color ? `background-color: ${props.color};` : ''};
+
+  * {
+    word-break: break-word;
+  }
 `;
 
-export { Container, Row, Col }
+export { AppContainer, Container, Row, Col }

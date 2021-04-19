@@ -18,7 +18,12 @@ const KanyeActions = () => {
       if (char === '\n') {
         return [...prevState, ...[char, '']]
       } else if (char.match(/[ ,?!]/g)) {
-        const next = char.match(/[ ,?!]/g)[0] === ' ' ? '' : char.match(/[ ,?!–—]/g)[0]
+        let next = char.match(/[ ,?!]/g)[0] === ' ' ? '' : char.match(/[ ,?!-–—]/g)[0]
+        // New line if two empty chars
+        if (prevState[prevState.length - 1] === '') {
+          // prevState.pop()
+          next = '\n'
+        }
         return [...prevState, ...[next]]
       } else {
         const newState = [...prevState]
@@ -128,15 +133,6 @@ const KanyeActions = () => {
 
   return (
     <Row>
-      <Col
-        xs="12"
-        md="4"
-        offset-xs="0"
-        offset-md="4"
-        justify="space-around"
-      >
-        Loading Feedback and Action
-      </Col>
       <Col cols={12}>
         seed: { seed }
       </Col>
@@ -150,7 +146,10 @@ const KanyeActions = () => {
       }
       </Col>
       <Col cols={12} sm={6}>
-        payload: <span style={{width: '100%', height: 400}}>{ JSON.stringify(localPayload) }</span>
+        <div>
+          <p>payload</p>
+          <p>{ JSON.stringify(localPayload) }</p>
+        </div>
       </Col>
     </Row>
   )
