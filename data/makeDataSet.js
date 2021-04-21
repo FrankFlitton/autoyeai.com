@@ -2,6 +2,19 @@ const makeAlbums = require('./makeAlbums')
 const csv = require('./csv')
 const txt = require('./txt')
 
+const AlbumOrder = [
+  'The College Dropout',
+  'Late Registration',
+  'Graduation',
+  '808s & Heartbreak',
+  'G.O.O.D. Fridays',
+  'My Beautiful Dark Twisted Fantasy',
+  'Yeezus',
+  'The Life of Pablo',
+  'ye',
+  'JESUS IS KING',
+]
+
 const cleanAds = (lyrics) => {
   const rawLyrics = '' + lyrics
   const stringSong = rawLyrics.split('\n').map(s => s.trim()).join('\n')
@@ -81,7 +94,8 @@ const tokenizeLyrics = (lyrics, song) => {
 }
 
 const processAlbums = (albumMap) => {
-  const albumNames = Object.keys(albumMap)
+  const albumNames = AlbumOrder
+  console.log(albumNames)
   let masterRecords = []
   for (let a = 0; a < albumNames.length; a++) {
     // for (let a = 0; a < 5; a++) {
@@ -91,7 +105,6 @@ const processAlbums = (albumMap) => {
 
 
     for (let s = 0; s < album.length; s++) {
-
       let song = album[s]
       const lyricsRaw = song['lyrics']
       const lyrics = cleanAds(lyricsRaw)
