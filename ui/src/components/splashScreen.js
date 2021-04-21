@@ -30,6 +30,7 @@ const SplashFullscreen = styled.div`
     position: absolute;
     height: 100%;
     top: 0;
+    margin-top: 3px;
     .animated-text {
       font-weight: 700;
       text-align: center;
@@ -52,8 +53,27 @@ const SplashFullscreen = styled.div`
       &:nth-child(1),
       &:nth-child(3)  {
         /* .animated-text-container > div > div:nth-child(1) */
-        color: white !important;
+        color: white;
+        -webkit-text-stroke-color: 1px;
+        -webkit-text-stroke-width: 1px;
         -webkit-text-stroke: 1px black;
+        text-shadow:
+          -1px -1px 0 #000,
+          1px -1px 0 #000,
+          -1px 1px 0 #000,
+          1px 1px 0 #000;
+      }
+      &:nth-child(2)  {
+        /* .animated-text-container > div > div:nth-child(1) */
+        color: black;
+        -webkit-text-stroke-color: 1px;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke: 1px black;
+        text-shadow:
+          -1px -1px 0 #000,
+          1px -1px 0 #000,
+          -1px 1px 0 #000,
+          1px 1px 0 #000;
       }
     }
   }
@@ -98,6 +118,7 @@ const SplashFullscreen = styled.div`
       line-height: 24px;
       word-break: normal;
       text-transform: uppercase;
+      height: 3em;
     }
   }
 `
