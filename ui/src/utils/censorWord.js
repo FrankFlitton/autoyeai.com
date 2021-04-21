@@ -13,7 +13,7 @@ const censorList = {
 }
 
 const censorWord = (word) => {
-  if (typeof word === 'string' && word === '') return word
+  if (typeof word !== 'string' || word === '') return word
 
   const isTitleCase = word.charAt(0).match(/[A-Z]/g)
   const normalizedWord = word.toLowerCase().trim()
