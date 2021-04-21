@@ -1,5 +1,6 @@
 const censorList = {
   fucked: 'loved',
+  fucker: 'lover',
   fuck: 'love',
   drug: 'candy',
   ass: 'booty',
