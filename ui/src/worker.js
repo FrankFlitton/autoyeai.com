@@ -24,7 +24,7 @@ addEventListener("message", async e => { // eslint-disable-line no-restricted-gl
   if (e.data === "Load Data") {
     await getData()
   }
-  if (e.data === "Generate Seed") {
+  if (e.data.startsWith("Generate Seed")) {
     if (textData) {
       seed = getSeed('', textData)
       postMessage('Generate Seed|' + seed[0])
@@ -33,7 +33,14 @@ addEventListener("message", async e => { // eslint-disable-line no-restricted-gl
       seed = getSeed('', textData)
     }
   }
-  if (e.data === "Generate Data") {
+  if (e.data.startsWith("Generate Data")) {
+    const data = e.data.split('|')
+    const dataSet = data[1]
+
+    console.log(dataSet)
+
+    // Splice textData via DataSet when new data set is specified
+
     if (!textData) {
       await getData('', textData)
     }

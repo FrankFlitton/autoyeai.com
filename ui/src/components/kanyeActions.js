@@ -5,11 +5,12 @@ import { Row, Col } from './grid'
 import LyricsViewer from './lyricsViewer'
 
 const KanyeActions = () => {
-  const {seed, setSeed} = useContext(GeneratorContext)
+  const {seed, setSeed, dataSet} = useContext(GeneratorContext)
   const [localPayload, setLocalPayload] = useState([''])
   const [correctedText, setCorrectedText] = useState([''])
   const [isSpellerTrained, setIsSpellerTrained] = useState(false)
   const [isFinished, setIsFinished] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false)
 
   function updatePayload (char) {
     let prevWord = ''
@@ -46,8 +47,9 @@ const KanyeActions = () => {
   const runGenerate = () => {
     const webWorker = new Worker('../worker.js', { type: 'module' })
 
-    webWorker.postMessage("Generate Data")
+    webWorker.postMessage(`Generate Data|${dataSet}`)
     setIsFinished(false)
+    setIsLoaded(true)
 
     webWorker.addEventListener("message", event => {
       if (!event.data) {
@@ -57,7 +59,7 @@ const KanyeActions = () => {
           const data = event.data.split('Text Generation Finished|')[1]
           setIsFinished(true)
           updatePayload(data)
-          webWorker.terminate()
+          // webWorker.terminate()
           // correctText(data)
         } else if (event.data.includes('Generate Seed|')) {
           const data = event.data.split('Generate Seed|')[1]
@@ -76,6 +78,7 @@ const KanyeActions = () => {
           }
 
         } else if (event.data.includes('TextData|')) {
+          setIsLoaded(true)
           if (!isSpellerTrained) {
             const data = event.data.split('TextData|')[1]
             if (data.length) {
@@ -92,6 +95,7 @@ const KanyeActions = () => {
   }
 
   const fixWord = (word) => {
+    if (word.match(/[,()!?.]/) && word.length === 1) return ''
     if (word === '\n') return word
     if (word.match(/[0-9]/)) return word
     if (word.length <= 1 && word === 'i') {
@@ -101,7 +105,7 @@ const KanyeActions = () => {
     const isTitleCase = word.charAt(0).match(/[A-Z]/g)
     const hasPunctuation = word.charAt(word.length - 1).match(/[,?!]/g)
 
-    let correctedWord = word
+    let correctedWord = word.replace(/[()\\/]/gi, '')
 
     if (spellcheck.nWords.hasOwnProperty(word.toLowerCase())) {
       correctedWord = word
@@ -121,12 +125,7 @@ const KanyeActions = () => {
   }
 
   useEffect(() => {
-
     if (seed === '') runGenerate()
-
-    // if (seed !== '' && !isFinished && localPayload.length > correctedText.length) {
-    //   // correctText(localPayload)
-    // }
 
   // eslint-disable-next-line
   }, [seed])
@@ -134,6 +133,7 @@ const KanyeActions = () => {
   return (
     <Row>
       <Col cols={12}>
+        Is loaded: { isLoaded.toString() } <br />
         seed: { seed }
       </Col>
       <Col cols={12} sm={6}>
@@ -149,6 +149,10 @@ const KanyeActions = () => {
         <div>
           <p>payload</p>
           <p>{ JSON.stringify(localPayload) }</p>
+        </div>
+        <div>
+          <p>corrected</p>
+          <p>{ JSON.stringify(correctedText) }</p>
         </div>
       </Col>
     </Row>
