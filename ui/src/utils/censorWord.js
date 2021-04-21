@@ -24,9 +24,11 @@ const censorWord = (word) => {
   let censor = normalizedWord
   const curses = Object.keys(censorList)
   for (let curse of curses) {
-    if (normalizedWord.includes(curse)) {
-      censor = normalizedWord.replace(curse, censorList[curse]);
-      break;
+    if (censor.includes(curse)) {
+      if (censor.length + 3 > curse.length) { // less false positives
+        censor = censor.replace(curse, censorList[curse]);
+        break;
+      }
     }
   }
 
