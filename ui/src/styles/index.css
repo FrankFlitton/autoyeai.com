@@ -44,6 +44,15 @@ code {
   padding-bottom: 0 !important;
 }
 
+a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom-color: currentColor;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  box-sizing: content-box !important;
+}
+
 /* debug */
 /* * {
   background: #FF00F011;
