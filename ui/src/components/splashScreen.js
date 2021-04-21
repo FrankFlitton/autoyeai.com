@@ -119,7 +119,7 @@ const SplashScreen = () => {
   const scrollToContent = () => {
     const element = document.getElementById('generate')
     window.scrollTo({
-        top: element.offsetTop,
+        top: element.offsetTop - 60,
         left: 0,
         behavior: 'smooth'
       })
