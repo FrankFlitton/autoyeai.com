@@ -41,7 +41,14 @@ const offset = (col, vw) => {
 }
 
 const AppContainer = styled.div`
+  --primaryTextColor: ${props => props.dark ? 'white' : 'black'};
+  --secondaryTextColor: ${props => !props.dark ? 'white' : 'black'};
+  --primaryBackgroundColor: ${props => !props.dark ? 'white' : 'black'};
+  --secondaryBackgroundColor: ${props => props.dark ? 'white' : 'black'};
+
   width: 100%;
+  color: var(--primaryTextColor);
+  background: var(--secondaryTextColor);
 `
 
 const Container = styled.div`

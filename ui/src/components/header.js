@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import styled from "styled-components"
+import { GeneratorContext } from '../state/generator'
 import { Container, Row, Col } from "./grid"
 
 const StyledHeader = styled.header`
@@ -7,10 +9,15 @@ const StyledHeader = styled.header`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  background: white;
-  border-bottom: 2px solid black;
+  color: var(--primaryTextColor, black);
+  background: var(--primaryBackgroundColor, white);
+  border-bottom: 2px solid var(--primaryTextColor, black);
   position: fixed;
   z-index: 999;
+  .actions {
+    position: fixed;
+    padding: 0 1em;
+  }
 `;
 
 const H1 = styled.h1`
@@ -19,6 +26,14 @@ const H1 = styled.h1`
 `
 
 const Header = () => {
+  const { dark, setDark } = useContext(GeneratorContext)
+
+  const handleClick = (state) => {
+    const val = [state]
+    const newVal = [...val]
+    setDark(!newVal[0])
+  }
+
   return (
     <StyledHeader>
       <Container>
@@ -31,6 +46,9 @@ const Header = () => {
           </Col>
         </Row>
       </Container>
+      <div className="actions">
+        <button onClick={() => handleClick(dark)}>dark: {dark ? 'true' : 'false'}</button>
+      </div>
     </StyledHeader>
   );
 }

@@ -3,8 +3,8 @@ import { Container, Row, Col } from './grid'
 
 const StyledFooter = styled.footer`
   padding: 0 1em;
-  background: black;
-  color: white;
+  background: var(--secondaryBackgroundColor, black);
+  color: var(--secondaryTextColor, white);
 `;
 
 const Footer = () => {

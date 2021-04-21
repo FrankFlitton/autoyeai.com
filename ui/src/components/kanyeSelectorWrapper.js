@@ -42,7 +42,7 @@ const KanyeSelectorWrapper = () => {
   const { dataSet } = useContext(GeneratorContext)
 
   return (
-    <Container>
+    <Container id="generate">
       <Row>
         <Col width="100%">
           <KanyeGraphic>

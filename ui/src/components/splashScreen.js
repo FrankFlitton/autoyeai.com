@@ -9,17 +9,16 @@ const SplashFullscreen = styled.div`
   justify-content: center;
   padding-top: 60px;
   padding-bottom: 60px;
+  cursor: pointer;
 
   h2 {
     font-family: Helvetica-Bold;
     font-size: 18px;
-    color: #000000;
     text-transform: uppercase;
   }
   .sub-text {
     font-family: Helvetica-Oblique;
     font-size: 21px;
-    color: #000000;
     text-align: center;
   }
 
@@ -50,31 +49,23 @@ const SplashFullscreen = styled.div`
         padding-bottom: 0;
       }
     }
-    > div > div{
+    > div > div {
       &:nth-child(1),
+      &:nth-child(2),
       &:nth-child(3)  {
         /* .animated-text-container > div > div:nth-child(1) */
-        color: white;
+        color: var(--secondaryTextColor, white);
         -webkit-text-stroke-color: 1px;
         -webkit-text-stroke-width: 1px;
-        -webkit-text-stroke: 1px black;
+        -webkit-text-stroke: 1px var(--primaryTextColor, black);
         text-shadow:
-          -1px -1px 0 #000,
-          1px -1px 0 #000,
-          -1px 1px 0 #000,
-          1px 1px 0 #000;
+          -1px -1px 0 var(--primaryTextColor, black),
+          1px -1px 0 var(--primaryTextColor, black),
+          -1px 1px 0 var(--primaryTextColor, black),
+          1px 1px 0 var(--primaryTextColor, black);
       }
       &:nth-child(2)  {
-        /* .animated-text-container > div > div:nth-child(1) */
-        color: black;
-        -webkit-text-stroke-color: 1px;
-        -webkit-text-stroke-width: 1px;
-        -webkit-text-stroke: 1px black;
-        text-shadow:
-          -1px -1px 0 #000,
-          1px -1px 0 #000,
-          -1px 1px 0 #000,
-          1px 1px 0 #000;
+        color: var(--primaryTextColor, black) !important;
       }
     }
   }
@@ -110,7 +101,7 @@ const SplashFullscreen = styled.div`
       border: 0;
       outline: 0;
       height: 3px;
-      background: black;
+      background: var(--primaryTextColor, black);
     }
     .subtitle {
       font-weight: 700;
@@ -125,8 +116,16 @@ const SplashFullscreen = styled.div`
 `
 
 const SplashScreen = () => {
+  const scrollToContent = () => {
+    const element = document.getElementById('generate')
+    window.scrollTo({
+        top: element.offsetTop,
+        left: 0,
+        behavior: 'smooth'
+      })
+  }
   return (
-    <SplashFullscreen>
+    <SplashFullscreen onClick={() => scrollToContent()}>
       <Container>
         <Row justify={'center'}>
           <Col className="pb-0">

@@ -4,10 +4,13 @@ import './styles/index.css';
 import App from './pages/App';
 import registerServiceWorker from "./registerServiceWorker";
 import reportWebVitals from './reportWebVitals';
+import { GeneratorProvider } from './state/generator'
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <GeneratorProvider>
+      <App />
+    </GeneratorProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
