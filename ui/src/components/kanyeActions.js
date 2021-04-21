@@ -15,26 +15,36 @@ const KanyeActions = () => {
   function updatePayload (char) {
     let prevWord = ''
     setLocalPayload((prevState) => {
-      if (char.match(/[ \n]/g)) prevWord = prevState[prevState.length - 1]
+      let oldState = [...prevState]
+      if (char.match(/[ \n]/g)) prevWord = oldState[oldState.length - 1]
       if (char === '\n') {
         return [...prevState, ...[char, '']]
+      } else if (
+        oldState[oldState.length - 1] === '' &&
+        oldState[oldState.length - 2] === ''
+      ) {
+        oldState.pop()
+        oldState.pop()
+        oldState.push('\n')
       } else if (char.match(/[ ,?!]/g)) {
-        let next = char.match(/[ ,?!]/g)[0] === ' ' ? '' : [char.match(/[ ,?!-–—]/g)[0]]
-        // New line if two empty chars
-        if (prevState[prevState.length - 1] === '') {
-          // prevState.pop()
-          next = ['\n']
-          const isSentenceEnd = char.match(/[?!.]/)
-          if (isSentenceEnd) {
-            next = [isSentenceEnd[0], ...next]
-          }
+        let next = char.match(/[ ,?!]/g)[0] === ' ' ? '' : char.match(/[ ,?!-–—]/g)[0]
+
+        const isSentenceEnd = char.match(/[?!.]/)
+        if (isSentenceEnd) {
+          // New line if punctuation
+          oldState = [...oldState, ...[isSentenceEnd[0], '\n', '']]
+        } else if (oldState[oldState.length - 1] === '') {
+          // New line if two empty chars
+          oldState = [...oldState, ...['\n'], [next]]
+        } else {
+          oldState = [...oldState, ...[next]]
         }
-        return [...prevState, ...next]
       } else {
-        const newState = [...prevState]
+        const newState = [...oldState]
         const lastToken = newState.pop()
-        return [...newState, ...[lastToken + char]]
+        oldState = [...newState, ...[lastToken + char]]
       }
+      return oldState
     })
     if (isFinished) prevWord = localPayload[localPayload.length - 1]
     if (isFinished || (char.match(/[ \n]/g) && prevWord !== '')) {
@@ -54,6 +64,10 @@ const KanyeActions = () => {
     webWorker.postMessage(`Generate Data|${dataSet}`)
     setIsFinished(false)
     setIsLoaded(true)
+
+    window.addEventListener("beforeunload", () => {
+      webWorker.terminate()
+    })
 
     webWorker.addEventListener("message", event => {
       if (!event.data) {
@@ -106,8 +120,8 @@ const KanyeActions = () => {
       return word.toUpperCase()
     }
 
-    const isTitleCase = word.charAt(0).match(/[A-Z]/g)
-    const hasPunctuation = word.charAt(word.length - 1).match(/[,?!]/g)
+    const isTitleCase = word[0] === '' ? false : word.charAt(0).match(/[A-Z]/g)
+    const hasPunctuation = word.length === 0 ? false : word.charAt(word.length - 1).match(/[,?!]/g)
 
     let correctedWord = word.replace(/[()\\/]/gi, '')
 
