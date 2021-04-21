@@ -66,6 +66,7 @@ const Row = styled.div`
 
 const Col = styled.div`
   display: flex;
+  flex-wrap: wrap;
   align-items: ${props => props.align ? props.align : 'center'};
   justify-content: ${props => props.justify ? props.justify : 'space-between'};
   max-width: 100%;
