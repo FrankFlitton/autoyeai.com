@@ -3,11 +3,12 @@ import { Container, Row, Col, sizes } from './grid'
 
 const SplashFullscreen = styled.div`
   min-height: 100vh;
-  min-height: calc(100vh - 5em);
   display: flex;
   flex: 1 1 0;
   align-items: center;
   justify-content: center;
+  padding-top: 60px;
+  padding-bottom: 60px;
 
   h2 {
     font-family: Helvetica-Bold;

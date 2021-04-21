@@ -2,24 +2,29 @@ import styled from "styled-components"
 import { Container, Row, Col } from "./grid"
 
 const StyledHeader = styled.header`
-  background: red;
-  padding: 0 1em;
+  height: 53px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  /* position: fixed;
-  top: 0;
-  left: 0; */
+  background: white;
+  border-bottom: 2px solid black;
+  position: fixed;
+  z-index: 999;
 `;
+
+const H1 = styled.h1`
+  font-size: 18px;
+  font-weight: 500;
+`
 
 const Header = () => {
   return (
     <StyledHeader>
-      <Container fluid>
+      <Container>
         <Row>
           <Col>
-            <h1>Auto Ye</h1>
+            <H1>AutoYe.ai</H1>
           </Col>
           <Col>
             <span>What would Ye do?</span>
