@@ -2,7 +2,8 @@ import { generate } from './data/generate'
 import { makeSeed } from './data/makeSeed'
 import { loadData } from './data/loadData'
 
-addEventListener("message", async e => { // eslint-disable-line no-restricted-globals
+// eslint-disable-next-line no-restricted-globals
+addEventListener("message", async e => {
   var textData;
   var model;
   var seed = [];
@@ -53,4 +54,9 @@ addEventListener("message", async e => { // eslint-disable-line no-restricted-gl
         postMessage('Text Generation Finished|' + text);
       })
   }
+});
+
+// eslint-disable-next-line no-restricted-globals
+addEventListener("beforeunload", () => {
+  window.close();
 });
