@@ -194,21 +194,21 @@ const SplashScreen = () => {
               <Row justify="center">
                 <Col cols={12}>
                   <div className="animated-text">
-                    <span>WHICH / ONE</span>
+                    <span>WHICH / YE</span>
                   </div>
                 </Col>
               </Row>
               <Row justify="center">
                 <Col cols={12}>
                   <div className="animated-text">
-                    <span>WHICH / ONE</span>
+                    <span>WHICH / YE</span>
                   </div>
                 </Col>
               </Row>
               <Row justify="center">
                 <Col cols={12}>
                   <div className="animated-text">
-                    <span>WHICH / ONE</span>
+                    <span>WHICH / YE</span>
                   </div>
                 </Col>
               </Row>
