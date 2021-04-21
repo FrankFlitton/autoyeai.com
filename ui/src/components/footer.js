@@ -2,9 +2,12 @@ import styled from 'styled-components'
 import { Container, Row, Col } from './grid'
 
 const StyledFooter = styled.footer`
-  padding: 0 1em;
   background: var(--secondaryBackgroundColor, black);
   color: var(--secondaryTextColor, white);
+  padding: 4em 1em;
+  align-items: center;
+  display: flex;
+  margin-top: 4em;
 `;
 
 const Footer = () => {
