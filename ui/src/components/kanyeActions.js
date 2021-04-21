@@ -19,13 +19,17 @@ const KanyeActions = () => {
       if (char === '\n') {
         return [...prevState, ...[char, '']]
       } else if (char.match(/[ ,?!]/g)) {
-        let next = char.match(/[ ,?!]/g)[0] === ' ' ? '' : char.match(/[ ,?!-–—]/g)[0]
+        let next = char.match(/[ ,?!]/g)[0] === ' ' ? '' : [char.match(/[ ,?!-–—]/g)[0]]
         // New line if two empty chars
         if (prevState[prevState.length - 1] === '') {
           // prevState.pop()
-          next = '\n'
+          next = ['\n']
+          const isSentenceEnd = char.match(/[?!.]/)
+          if (isSentenceEnd) {
+            next = [isSentenceEnd[0], ...next]
+          }
         }
-        return [...prevState, ...[next]]
+        return [...prevState, ...next]
       } else {
         const newState = [...prevState]
         const lastToken = newState.pop()
