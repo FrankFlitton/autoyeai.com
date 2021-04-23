@@ -12,6 +12,7 @@ const LyricSheet = styled.div`
   outline: 0;
   font-size: 1.68em;
   line-height: 1.3em;
+  min-height: 300px;
 `
 
 const LyricsViewer = ({value}) => {

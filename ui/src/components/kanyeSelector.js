@@ -83,7 +83,7 @@ const KanyeSelector = () => {
       </Row>
       <Row>
         <Col>
-          <Header>WHICH / ONE</Header>
+          <Header><br />WHICH / ONE</Header>
         </Col>
       </Row>
       <Row justify="flex-start">
@@ -100,8 +100,7 @@ const KanyeSelector = () => {
               className={data.id === dataSet.id ? 'selected' : ''}
               onClick={e => handleClick(e)}
             >
-              <img id={`icon-${i}`} src={`/img/${data.id}.jpg`} />
-              <span title={data.title} className="sr-only">{data.title}</span>
+              <img id={`icon-${i}`} src={`/img/${data.id}.jpg`} alt={`${data.title} themed lyric generation`}/>
             </AlbumButton>
           </Col>
         ))}
