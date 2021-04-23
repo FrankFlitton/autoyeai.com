@@ -106,13 +106,16 @@ const KanyeActions = () => {
           if (!!data.length) {
             setSeed(data)
             let seedTokens = data.split(/[\n ]/g)
-            const startGen = seedTokens.pop()
+            const lastToken = seedTokens.pop()
             const correctedSeed = seedTokens.map(word => fixWord(word))
 
             setLocalPayload(seedTokens)
+            setLocalPayload(' ')
             setCorrectedText(correctedSeed)
-            // setLocalPayload(startGen)
-            updatePayload(startGen)
+
+            for (let index = 0; index < lastToken.length; index++) {
+              setLocalPayload(lastToken[index])
+            }
           }
 
         } else if (event.data.includes('TextData|')) {
