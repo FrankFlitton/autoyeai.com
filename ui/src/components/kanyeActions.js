@@ -7,7 +7,6 @@ import LyricsViewer from './lyricsViewer'
 const KanyeActions = () => {
   const {seed, setSeed, dataSet} = useContext(GeneratorContext)
   const spellcheck = speller
-  // var webWorker =
 
   const [localPayload, setLocalPayload] = useState([''])
   const [correctedText, setCorrectedText] = useState([''])
@@ -15,7 +14,6 @@ const KanyeActions = () => {
   const [isFinished, setIsFinished] = useState(false)
   const [isLoaded, setIsLoaded] = useState(false)
   const [webWorker] = useState(new Worker('../worker.js', { type: 'module' }))
-  const [counter, setCounter] = useState(0)
 
   function updatePayload (char) {
     let prevWord = ''
@@ -165,11 +163,10 @@ const KanyeActions = () => {
   }
 
   useEffect(() => {
-    console.log('useEffect', counter, seed)
     if (seed === '') setupWebWorker()
 
   // eslint-disable-next-line
-  }, [seed, counter])
+  }, [seed])
 
   return (
     <Row>

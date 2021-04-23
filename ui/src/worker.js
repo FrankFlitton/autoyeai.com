@@ -31,17 +31,17 @@ addEventListener("message", async e => {
   if (e.data === "Load Data") {
     await getData()
   }
-  // if (e.data.startsWith("Generate Seed")) {
-  //   console.log('returned seed, seed', seed[0])
-  //   if (textData) {
-  //     await getSeed('', textData)
-  //     console.log(seed)
-  //     postMessage('Generate Seed|' + seed[0])
-  //   } else {
-  //     textData = await getData()
-  //     await getSeed('', textData)
-  //   }
-  // }
+
+  if (e.data.startsWith("Generate Seed")) {
+    if (!!textData) {
+      const newSeed = await getSeed('', textData)
+      postMessage('Generate Seed|' + newSeed[0])
+    } else {
+      const newTextData = await getData()
+      await getSeed('', newTextData)
+    }
+  }
+
   if (e.data.startsWith("Generate Data")) {
     const data = e.data.split('|')
     const dataSet = data[1]
@@ -49,11 +49,10 @@ addEventListener("message", async e => {
 
     console.log(dataSet)
 
-    // Splice textData via DataSet when new data set is specified
-
     if (!textData) {
       console.log('loading data...')
       const loadingData = await getData('', textData)
+      console.log('data', !!loadingData)
     }
     console.log('loaded. check seed', seed)
     console.log('loaded. check textData', textData)
@@ -61,7 +60,7 @@ addEventListener("message", async e => {
       console.log('returned seed, generate', seed[0])
       const loadingNewSeed = await getSeed('', textData)
       // loadingNewSeed
-      postMessage('Generate Seed|' + seed[0])
+      postMessage('Generate Seed|' + loadingNewSeed[0])
     }
     console.log('seeded.', seed.length, newSeed.length)
     if (model && !!seed.length && textData) {
