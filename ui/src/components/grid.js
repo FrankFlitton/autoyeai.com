@@ -45,6 +45,7 @@ const AppContainer = styled.div`
   --secondaryTextColor: ${props => !props.dark ? 'white' : 'black'};
   --primaryBackgroundColor: ${props => !props.dark ? 'white' : 'black'};
   --secondaryBackgroundColor: ${props => props.dark ? 'white' : 'black'};
+  --darkFilter: ${props => props.dark ? 'invert(1)' : 'invert(0)'};
 
   width: 100%;
   color: var(--primaryTextColor);

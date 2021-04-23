@@ -10,7 +10,7 @@ const KanyeSelectorWrapper = () => {
 
   return (
     <Container id="generate">
-      <Row>
+      <Row align={'flex-start'}>
         <Col xs={12} md={6}>
           <KanyeSelector />
         </Col>

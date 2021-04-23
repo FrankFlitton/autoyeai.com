@@ -24,7 +24,7 @@ function reducer(state, action) {
     case actions.SET_SEED:
       return { ...state, seed: action.value };
     case actions.SET_DATASET:
-      return { ...state, dataSet: DataSets[action.value] };
+      return { ...state, dataSet: action.value };
     case actions.SET_PAYLOAD:
       return { ...state, payload: action.value };
     case actions.SET_CENSOR:

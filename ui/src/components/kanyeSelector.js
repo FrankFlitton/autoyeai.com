@@ -8,22 +8,38 @@ const AlbumButton = styled.button`
   min-width: 32px;
   width: 100%;
   padding: 0;
-  padding-top: 100%;
   margin: 0;
-  border: 2px white solid;
   outline: 0;
-  background: 'red';
+  border: 0;
+  border-radius: 0;
   position: relative;
-  border-radius: 0.5em;
+  background: var(--primaryBackgroundColor, white);
   &.selected {
-    background: green;
+    background: var(--primaryBackgroundColor, white);
+    &:after {
+      content: ' ';
+      position: absolute;
+      z-index: 2;
+      width: 160%;
+      height: 160%;
+      top: -40%;
+      left: -30%;
+      background: url('/img/selected.svg');
+      background-size: contain;
+      background-position: center center;
+      background-repeat: no-repeat;
+      filter: var(--darkFilter, none);
+    }
   }
   &:hover {
-    background: blue;
+    background: var(--secondaryBackgroundColor, black);
   }
   &:focus {
-    border: 2px blue solid;
     outline: 0;
+  }
+  img {
+    width: 100%;
+    filter: var(--darkFilter, none);
   }
   span {
     position: absolute;
@@ -43,23 +59,40 @@ const CensorButton = styled.button`
   outline: 0;
 `
 
+const Header = styled.span`
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--primaryTextColor, black);
+  margin-bottom: 1em;
+`;
+
 const KanyeSelector = () => {
   const { dataSet, setDataSet, censor, setCensor } = useContext(GeneratorContext)
 
   const handleClick = (e) => {
     const index = parseInt(e.target.id.split('-')[1])
-    console.log(index)
-    if (index > -1) setDataSet(index)
+    if (index > -1) setDataSet(DataSets[index])
   }
 
   return (
+    <>
       <Row>
+        <Col>
+          <Header>GENERATE LYRICS:</Header>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <Header>WHICH / ONE</Header>
+        </Col>
+      </Row>
+      <Row justify="flex-start">
         { DataSets.map((data, i) => (
           <Col
             key={data.id}
-            xs="2"
-            md="1"
-            justify="space-evenly"
+            xs="4"
+            sm="2"
+            md="2"
           >
             <AlbumButton
               id={`album-${i}`}
@@ -67,14 +100,33 @@ const KanyeSelector = () => {
               className={data.id === dataSet.id ? 'selected' : ''}
               onClick={e => handleClick(e)}
             >
-              <span title="data.title" className="sr-only">{data.title}</span>
+              <img id={`icon-${i}`} src={`/img/${data.id}.jpg`} />
+              <span title={data.title} className="sr-only">{data.title}</span>
             </AlbumButton>
           </Col>
         ))}
-        <Col cols={12} justify={'space-around'}>
-          <CensorButton onClick={() => setCensor(!censor)}>CalmYe Mode {censor ? 'Engaged' : 'Disengaged'}</CensorButton>
+      </Row>
+      <Row justify="flex-start">
+        <Col cols={4}>
+          <Header>&nbsp;</Header>
+          <Row>
+            <Col>
+              <Header>CALM YE MODE</Header>
+              <CensorButton onClick={() => setCensor(!censor)}>CalmYe Mode {censor ? 'Engaged' : 'Disengaged'}</CensorButton>
+            </Col>
+          </Row>
+        </Col>
+        <Col cols={4} offset={1}>
+          <Header>&nbsp;</Header>
+          <Row>
+            <Col>
+              <Header>LYRICS LENGTH</Header><br/>
+              <CensorButton onClick={() => setCensor(!censor)}>CalmYe Mode {censor ? 'Engaged' : 'Disengaged'}</CensorButton>
+            </Col>
+          </Row>
         </Col>
       </Row>
+    </>
   )
 }
 
