@@ -17,29 +17,6 @@
 
 import * as tf from '@tensorflow/tfjs';
 
-export const TEXT_DATA_URLS = {
-  'kanye-space': {
-    url: 'http://localhost:8888/masterSpaces.txt',
-    needle: 'Kanye Space'
-  },
-  'nietzsche': {
-    url: 'https://storage.googleapis.com/tfjs-examples/lstm-text-generation/data/nietzsche.txt',
-    needle: 'Nietzsche'
-  },
-  'julesverne': {
-    url: 'https://storage.googleapis.com/tfjs-examples/lstm-text-generation/data/t1.verne.txt',
-    needle: 'Jules Verne'
-  },
-  'shakespeare': {
-    url: 'https://storage.googleapis.com/tfjs-examples/lstm-text-generation/data/t8.shakespeare.txt',
-    needle: 'Shakespeare'
-  },
-  'tfjs-code': {
-    url: 'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.11.7/dist/tf.js',
-    needle: 'TensorFlow.js Code (Compiled, 0.11.7)'
-  }
-}
-
 /**
 * A class for text data.
 *
@@ -179,22 +156,21 @@ export class TextData {
   * @returns {[string, number[]} The string and index representation of the
   *   same slice.
   */
-  getRandomSlice(i) {
-    const startIndex = !!i
-      ? i
-      : Math.round(
-          Math.random() * (this.textLen_ - this.sampleLen_ - 1)
-        );
+  getRandomSlice(index) {
+    const startIndex = index
+        ? index
+        : Math.round(Math.random() * (this.textLen_ - this.sampleLen_ - 1))
     const textSlice = this.slice_(startIndex, startIndex + this.sampleLen_);
     return [textSlice, this.textToIndices(textSlice)];
   }
 
-  getRandomLineIndex () {
-    const textLines = this.textString_.split('\n').length - 5
-    let startLine = Math.round(Math.random() * textLines)
-
-    let startText = `${textLines[startLine]}`
-    return this.textString_.match(startText).index
+  getRandomLineIndex = async () => {
+    const lineTokens = `${this.textString_}`.split('\n')
+    const textLines = lineTokens.length - 5
+    const startLine = Math.round(Math.random() * textLines)
+    const startText = `${lineTokens[startLine]}`
+    const startIndex = `${this.textString_}`.indexOf(startText)
+    return startIndex
   }
 
   /**

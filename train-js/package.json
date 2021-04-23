@@ -5,6 +5,7 @@
   "main": "index.js",
   "license": "Apache-2.0",
   "private": true,
+  "type":"module",
   "engines": {
     "node": ">=8.9.0"
   },

@@ -1,15 +1,22 @@
 const DataSets = [
-  {id: 'default', title: 'All Kanye', extra: false},
-  {id: 'collegeDropout', title: 'The College Dropout', extra: false},
-  {id: 'lateRegistration', title: 'Late Registration', extra: false},
-  {id: 'graduation', title: 'Graduation', extra: false},
-  {id: 'heartbreak', title: '808s & HeartBreak', extra: false},
-  {id: 'goodFridays', title: 'Good Fridays', extra: true},
-  {id: 'mbdtf', title: 'My Beautiful Dark Twisted Fantasy', extra: false},
-  {id: 'yeezus', title: 'Yeezus', extra: false},
-  {id: 'lifeOfPablo', title: 'The Life of Pablo', extra: false},
-  {id: 'ye', title: 'Ye', extra: false},
-  {id: 'jesusIsKing', title: 'Jesus Is King', extra: false},
+  {id: 'allYe', title: 'All Ye', min: 0, max: 9010},
+  {id: 'graduation', title: 'Graduation', min: 0, max: 3550},
+  {id: 'darkFantasy', title: 'Dark Fantasy', min: 3552, max: 6240 },
+  {id: 'yeezus', title: 'Yeezus', min: 6242, max: 8178},
+  {id: 'saintYe', title: 'Saint Ye', min: 8180, max: 9010},
 ]
 
-export { DataSets }
+const Albums = [
+  {id: 'collegeDropout', title: 'The College Dropout'},
+  {id: 'lateRegistration', title: 'Late Registration'},
+  {id: 'graduation', title: 'Graduation'},
+  {id: 'heartbreak', title: '808s & HeartBreak'},
+  {id: 'goodFridays', title: 'Good Fridays'},
+  {id: 'mbdtf', title: 'My Beautiful Dark Twisted Fantasy'},
+  {id: 'yeezus', title: 'Yeezus'},
+  {id: 'lifeOfPablo', title: 'The Life of Pablo'},
+  {id: 'ye', title: 'Ye'},
+  {id: 'jesusIsKing', title: 'Jesus Is King'},
+]
+
+export { DataSets, Albums}

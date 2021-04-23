@@ -12,7 +12,7 @@ const AlbumButton = styled.button`
   margin: 0;
   border: 2px white solid;
   outline: 0;
-  background: ${props => props.extra ? 'black' : 'red'};
+  background: 'red';
   position: relative;
   border-radius: 0.5em;
   &.selected {
@@ -64,7 +64,6 @@ const KanyeSelector = () => {
             <AlbumButton
               id={`album-${i}`}
               title={data.title}
-              extra={data.extra}
               className={data.id === dataSet.id ? 'selected' : ''}
               onClick={e => handleClick(e)}
             >

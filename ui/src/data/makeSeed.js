@@ -1,16 +1,13 @@
-const makeSeed = (seed, textData) => {
-// Get a seed text from the text data object.
+const makeSeed = async (seed, textData) => {
+  // Get a seed text from the text data object.
   let seedSentence;
   let seedSentenceIndices;
+
   if (seed.length === 0) {
-    let lineIndex = null
-    try {
-      lineIndex = textData.getRandomLineIndex()
-    } catch (e) {
-      console.error(e)
-    }
+    const lineStartIndex = await textData.getRandomLineIndex();
+    // console.log(lineIndex)
     // Seed sentence is not specified yet. Get it from the data.
-    [seedSentence, seedSentenceIndices] = textData.getRandomSlice(lineIndex)
+    [seedSentence, seedSentenceIndices] = textData.getRandomSlice(lineStartIndex);
     seed = seedSentence
   } else {
     seedSentence = seed

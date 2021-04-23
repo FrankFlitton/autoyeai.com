@@ -16,7 +16,7 @@
  */
 
 /**
- * Use a trained next-character prediction model to generate some text. 
+ * Use a trained next-character prediction model to generate some text.
  */
 
 import * as fs from 'fs';
@@ -26,8 +26,8 @@ import * as argparse from 'argparse';
 
 import * as tf from '@tensorflow/tfjs';
 
-import {maybeDownload, TextData, TEXT_DATA_URLS} from './data';
-import {generateText} from './model';
+import {maybeDownload, TextData, TEXT_DATA_URLS} from './data.js';
+import {generateText} from './model.js';
 
 function parseArgs() {
   const parser = argparse.ArgumentParser({
@@ -92,7 +92,7 @@ async function main() {
 
   // Get a seed text from the text data object.
   const [seed, seedIndices] = textData.getRandomSlice();
-  
+
   console.log(`Seed text:\n"${seed}"\n`);
 
   const generated = await generateText(

@@ -1,17 +1,23 @@
-import { useContext } from 'react'
+// import { useContext } from 'react'
 // import styled from 'styled-components'
-import { GeneratorContext } from '../state/generator'
+// import { GeneratorContext } from '../state/generator'
 import { Container, Row, Col } from './grid'
 import KanyeActions from './kanyeActions'
 import KanyeSelector from './kanyeSelector'
 
 const KanyeSelectorWrapper = () => {
-  const { dataSet } = useContext(GeneratorContext)
+  // const { dataSet } = useContext(GeneratorContext)
 
   return (
     <Container id="generate">
-      <KanyeSelector />
-      <KanyeActions />
+      <Row>
+        <Col xs={12} md={6}>
+          <KanyeSelector />
+        </Col>
+        <Col xs={12} md={6}>
+          <KanyeActions />
+        </Col>
+      </Row>
     </Container>
   )
 }

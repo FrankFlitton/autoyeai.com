@@ -25,8 +25,8 @@ import * as path from 'path';
 
 import * as argparse from 'argparse';
 
-import {maybeDownload, TextData, TEXT_DATA_URLS} from './data';
-import {createModel, compileModel, fitModel, generateText} from './model';
+import {maybeDownload, TextData, TEXT_DATA_URLS} from './data.js';
+import {createModel, compileModel, fitModel, generateText} from './model.js';
 
 function parseArgs() {
   const parser = argparse.ArgumentParser({

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import { GeneratorContext } from '../state/generator'
 import speller from '../utils/spellcheck'
 import { Row, Col } from './grid'
@@ -6,11 +6,16 @@ import LyricsViewer from './lyricsViewer'
 
 const KanyeActions = () => {
   const {seed, setSeed, dataSet} = useContext(GeneratorContext)
+  const spellcheck = speller
+  // var webWorker =
+
   const [localPayload, setLocalPayload] = useState([''])
   const [correctedText, setCorrectedText] = useState([''])
   const [isSpellerTrained, setIsSpellerTrained] = useState(false)
   const [isFinished, setIsFinished] = useState(false)
   const [isLoaded, setIsLoaded] = useState(false)
+  const [webWorker] = useState(new Worker('../worker.js', { type: 'module' }))
+  const [counter, setCounter] = useState(0)
 
   function updatePayload (char) {
     let prevWord = ''
@@ -46,8 +51,10 @@ const KanyeActions = () => {
       }
       return oldState
     })
+
     if (isFinished) prevWord = localPayload[localPayload.length - 1]
     if (isFinished || (char.match(/[ \n]/g) && prevWord !== '')) {
+    // if (isFinished || (char.match(/[ \n]/g))) {
       setCorrectedText((prevState) => {
         return char === '\n'
           ? [...prevState, ...[fixWord(prevWord), '\n']]
@@ -56,20 +63,35 @@ const KanyeActions = () => {
     }
   }
 
-  const spellcheck = speller
+  const abort = () => {
+    webWorker.terminate()
+    webWorker.postMessage("Abort")
+    console.log('Sent Abort')
+  }
 
   const runGenerate = () => {
-    const webWorker = new Worker('../worker.js', { type: 'module' })
+    if (dataSet.id === undefined) return;
+    console.log('dataSet.id', dataSet.id)
 
-    webWorker.postMessage(`Generate Data|${dataSet}`)
+    setTimeout(() => {
+      webWorker.postMessage(`Generate Data|${dataSet.id}`)
+    }, 200);
+
+    // webWorker.postMessage(`Load Data|${dataSet.id}`)
+
+
     setIsFinished(false)
     setIsLoaded(true)
 
-    window.addEventListener("beforeunload", () => {
-      webWorker.terminate()
-    })
+    // window.addEventListener("beforeunload", () => {
+    //   webWorker.terminate()
+    // })
+    return;
+  }
 
+  const setupWebWorker = useCallback(() => {
     webWorker.addEventListener("message", event => {
+      // console.log(event.data)
       if (!event.data) {
         return;
       } else if (event.data.includes('|')) {
@@ -81,6 +103,7 @@ const KanyeActions = () => {
           // correctText(data)
         } else if (event.data.includes('Generate Seed|')) {
           const data = event.data.split('Generate Seed|')[1]
+          console.log('returned seed', data)
 
           if (!!data.length) {
             setSeed(data)
@@ -91,7 +114,6 @@ const KanyeActions = () => {
             setLocalPayload(seedTokens)
             setCorrectedText(correctedSeed)
             // setLocalPayload(startGen)
-            updatePayload(' ')
             updatePayload(startGen)
           }
 
@@ -109,8 +131,8 @@ const KanyeActions = () => {
         updatePayload(event.data)
       }
     })
-    return;
-  }
+  // eslint-disable-next-line
+  }, [])
 
   const fixWord = (word) => {
     if (word.match(/[,()!?.]/) && word.length === 1) return ''
@@ -143,13 +165,16 @@ const KanyeActions = () => {
   }
 
   useEffect(() => {
-    if (seed === '') runGenerate()
+    console.log('useEffect', counter, seed)
+    if (seed === '') setupWebWorker()
 
   // eslint-disable-next-line
-  }, [seed])
+  }, [seed, counter])
 
   return (
     <Row>
+      <Col xs={12}><button onClick={() => abort()}>abort</button></Col>
+      <Col xs={12}><button onClick={() => runGenerate()}>gen</button></Col>
       <Col cols={12}>
         Is loaded: { isLoaded.toString() } <br />
         seed: { seed }
