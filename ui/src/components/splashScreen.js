@@ -150,7 +150,7 @@ const SplashScreen = () => {
             </Row>
             <Row>
               <Col offset={6} cols={3}>
-                <p className="subtitle hidden ma-0">
+                <p className="subtitle hidden m-0">
                   Yeezy taught me all I know, check it out...
                 </p>
               </Col>
@@ -168,7 +168,7 @@ const SplashScreen = () => {
             </Row>
             <Row align={'flex-end'}>
               <Col offset={6} cols={3} align={'end'}>
-                <p className="subtitle ma-0">
+                <p className="subtitle m-0">
                   A fluid stream of artificial consciousness.
                 </p>
               </Col>

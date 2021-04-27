@@ -39,10 +39,11 @@ const Header = () => {
       <Container>
         <Row>
           <Col>
-            <H1>AutoYe.ai</H1>
+            <H1>AutoYe Ai</H1>
           </Col>
-          <Col>
+          <Col justify="flex-end">
             <span>What would Ye do?</span>
+            <span>Menu</span>
           </Col>
         </Row>
       </Container>

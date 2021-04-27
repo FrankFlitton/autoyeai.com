@@ -40,16 +40,96 @@ const offset = (col, vw) => {
   }
 }
 
+const propInitials = (property) => {
+  return property
+    ? property.split('-')
+      .map(w => w.charAt(0).toLowerCase() )
+      .join('')
+    : ''
+}
+
+const helpers = (property, value, unit) => {
+  if (property && value) {
+    if (!unit) unit = ''
+
+    const base = `
+      .${property}-${value},
+      .${propInitials(property)}-${value}
+      {
+        ${property}: ${value}${unit} !important;
+      }`
+
+    const breakpoints = Object.keys(sizes).map(vw => {
+      return `@media (min-width: ${sizes[vw]}) {
+        .${property}-${vw}-${value},
+        .${propInitials(property)}-${vw}-${value}
+        {
+          ${property}: ${value}${unit} !important;
+        }
+      }`
+    })
+    .join('')
+
+    return base + breakpoints
+  } else {
+    return ''
+  }
+}
+
+const sizedHelpers = (property, num, unit) => {
+  let css = ''
+  for (let index = 0; index <= num; index++) {
+    css += helpers(property, `${index}`, unit)
+  }
+  return css
+}
+
 const AppContainer = styled.div`
   --primaryTextColor: ${props => props.dark ? 'white' : 'black'};
   --secondaryTextColor: ${props => !props.dark ? 'white' : 'black'};
   --primaryBackgroundColor: ${props => !props.dark ? 'white' : 'black'};
   --secondaryBackgroundColor: ${props => props.dark ? 'white' : 'black'};
-  --darkFilter: ${props => props.dark ? 'invert(1)' : 'invert(0)'};
+  --darkFilter: ${props => props.dark ? 'invert(1) hue-rotate(180deg)' : 'invert(0) hue-rotate(0deg)'};
+
+  .darkFilter {
+    filter: var(--darkFilter, invert(0), hue-rotate(180deg))
+  }
 
   width: 100%;
   color: var(--primaryTextColor);
   background: var(--secondaryTextColor);
+
+  /* Compute for global css helpers.
+
+     Example:
+      .display-none
+      .display-xs-none [...]
+      .d-none
+      .d-xs-none [...]
+
+      .padding-top-0: 0
+      .pt-0: 0
+  */
+
+  ${helpers('display', 'none')}
+  ${helpers('display', 'flex')}
+  ${helpers('display', 'block')}
+  ${helpers('display', 'inline')}
+  ${helpers('display', 'inline-block')}
+
+  ${helpers('width', '100', '%')}
+
+  ${sizedHelpers('padding', 5, 'rem')}
+  ${sizedHelpers('padding-top', 5, 'rem')}
+  ${sizedHelpers('padding-bottom', 5, 'rem')}
+  ${sizedHelpers('padding-left', 5, 'rem')}
+  ${sizedHelpers('padding-right', 5, 'rem')}
+
+  ${sizedHelpers('margin', 5, 'rem')}
+  ${sizedHelpers('margin-top', 5, 'rem')}
+  ${sizedHelpers('margin-bottom', 5, 'rem')}
+  ${sizedHelpers('margin-left', 5, 'rem')}
+  ${sizedHelpers('margin-right', 5, 'rem')}
 `
 
 const Container = styled.div`

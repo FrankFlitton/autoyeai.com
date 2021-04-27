@@ -37,10 +37,6 @@ const AlbumButton = styled.button`
   &:focus {
     outline: 0;
   }
-  img {
-    width: 100%;
-    filter: var(--darkFilter, none);
-  }
   span {
     position: absolute;
     bottom: 0;
@@ -100,7 +96,12 @@ const KanyeSelector = () => {
               className={data.id === dataSet.id ? 'selected' : ''}
               onClick={e => handleClick(e)}
             >
-              <img id={`icon-${i}`} src={`/img/${data.id}.jpg`} alt={`${data.title} themed lyric generation`}/>
+              <img
+                id={`icon-${i}`}
+                className="darkFilter w-100"
+                src={`/img/${data.id}.jpg`}
+                alt={`${data.title} themed lyric generation`}
+              />
             </AlbumButton>
           </Col>
         ))}
