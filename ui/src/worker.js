@@ -19,7 +19,7 @@ addEventListener("message", async e => {
   }
 
   async function getData (n) {
-    const modelName = n ? n : 'default'
+    const modelName = n ? n : 'allYe'
     const [t, m] = await loadData(modelName)
     textData = t
     model = m
@@ -44,14 +44,14 @@ addEventListener("message", async e => {
 
   if (e.data.startsWith("Generate Data")) {
     const data = e.data.split('|')
-    const dataSet = data[1]
+    const dataSet = data[1] ? data[1] : ''
     let newSeed = []
 
     console.log(dataSet)
 
     if (!textData) {
       console.log('loading data...')
-      const loadingData = await getData('', textData)
+      const loadingData = await getData(dataSet, textData)
       console.log('data', !!loadingData)
     }
     console.log('loaded. check seed', seed)
