@@ -5,7 +5,7 @@ import { DataSets } from "./data";
 const initialState = {
   seed: '',
   dataSet: DataSets[0],
-  payload: '',
+  payload: [''],
   censor: true,
   dark: false,
 };
@@ -16,7 +16,7 @@ const actions = {
   SET_PAYLOAD: "SET_PAYLOAD",
   SET_CENSOR: "SET_CENSOR",
   SET_DARK: "SET_DARK",
-  RESET: "RESET"
+  RESET: "RESET",
 };
 
 function reducer(state, action) {

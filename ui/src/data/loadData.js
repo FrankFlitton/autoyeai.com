@@ -1,11 +1,15 @@
 import * as tf from '@tensorflow/tfjs';
 import { TextData } from './data';
 
-const loadData = async () => {
+const loadData = async (dataSet) => {
+  const modelName = dataSet
+    ? dataSet
+    : 'allYe'
+
   const sampleStep = 3
 
-  const modelJsonUrl = '/models/default/model.json'
-  const textDataUrl = '/models/default/data.txt'
+  const modelJsonUrl = `/models/${modelName}/model.json`
+  const textDataUrl = `/models/${modelName}/data.txt`
 
   const model = await tf.loadLayersModel(modelJsonUrl)
   const sampleLen = model.inputs[0].shape[1]
@@ -13,7 +17,7 @@ const loadData = async () => {
   // Create the text data object.
   const textRequest = await fetch(textDataUrl)
   const text = await textRequest.text()
-  const textData = new TextData(`text-default`, text, sampleLen, sampleStep)
+  const textData = new TextData(`text-${modelName}`, text, sampleLen, sampleStep)
 
   return [textData, model]
 }

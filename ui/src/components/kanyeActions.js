@@ -5,7 +5,7 @@ import { Row, Col } from './grid'
 import LyricsViewer from './lyricsViewer'
 
 const KanyeActions = () => {
-  const {seed, setSeed, dataSet} = useContext(GeneratorContext)
+  const { seed, setSeed, dataSet, payload, setPayload } = useContext(GeneratorContext)
   const spellcheck = speller
 
   const [localPayload, setLocalPayload] = useState([''])
@@ -17,6 +17,9 @@ const KanyeActions = () => {
 
   function updatePayload (char) {
     let prevWord = ''
+    console.log('prevState', 'triggered')
+
+    // Local Payload
     setLocalPayload((prevState) => {
       let oldState = [...prevState]
       if (char.match(/[ \n]/g)) prevWord = oldState[oldState.length - 1]
@@ -47,19 +50,28 @@ const KanyeActions = () => {
         const lastToken = newState.pop()
         oldState = [...newState, ...[lastToken + char]]
       }
+      // setPayload(oldState)
       return oldState
     })
 
+    // Check to correct
     if (isFinished) prevWord = localPayload[localPayload.length - 1]
     if (isFinished || (char.match(/[ \n]/g) && prevWord !== '')) {
     // if (isFinished || (char.match(/[ \n]/g))) {
-      setCorrectedText((prevState) => {
+      setCorrectedText(prevState => {
         return char === '\n'
           ? [...prevState, ...[fixWord(prevWord), '\n']]
           : [...prevState, ...[fixWord(prevWord)]]
       })
     }
   }
+
+  useCallback(() => {
+    const lastWord = localPayload[localPayload.length - 1]
+    const newPayload = [...correctedText, ...[lastWord]]
+    if (localPayload.length > correctedText.length) setPayload(newPayload)
+  // eslint-disable-next-line
+  }, [localPayload, correctedText])
 
   const abort = () => {
     webWorker.terminate()
@@ -110,11 +122,11 @@ const KanyeActions = () => {
             const correctedSeed = seedTokens.map(word => fixWord(word))
 
             setLocalPayload(seedTokens)
-            setLocalPayload(' ')
+            updatePayload(' ')
             setCorrectedText(correctedSeed)
 
             for (let index = 0; index < lastToken.length; index++) {
-              setLocalPayload(lastToken[index])
+              updatePayload(lastToken[index])
             }
           }
 
@@ -132,6 +144,10 @@ const KanyeActions = () => {
         updatePayload(event.data)
       }
     })
+    // Trigger data load + speller train
+    // as a side effect
+    webWorker.postMessage("Load Data|allYe")
+
   // eslint-disable-next-line
   }, [])
 
@@ -160,14 +176,8 @@ const KanyeActions = () => {
     return correctedWord
   }
 
-  function typedText (correctedText, localPayload) {
-    const lastWord = localPayload[localPayload.length - 1]
-    return [...correctedText, ...[lastWord]]
-  }
-
   useEffect(() => {
     if (seed === '') setupWebWorker()
-
   // eslint-disable-next-line
   }, [seed])
 
@@ -179,13 +189,13 @@ const KanyeActions = () => {
         Is loaded: { isLoaded.toString() } <br />
         seed: { seed }
       </Col>
-      <Col cols={12} sm={6}>
-        localPayload: <br />
+      <Col cols={12}>
+        global payload: <br />
       </Col>
-      <Col cols={12} sm={6}> {
-        correctedText === null
+      <Col cols={12}> {
+        payload === null
           ? 'Broken'
-          : <LyricsViewer value={ typedText(correctedText, localPayload) } />
+          : <LyricsViewer />
       }
       </Col>
       <Col cols={12} sm={6}>
