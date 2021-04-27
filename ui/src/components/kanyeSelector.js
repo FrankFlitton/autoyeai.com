@@ -14,6 +14,7 @@ const AlbumButton = styled.button`
   border-radius: 0;
   position: relative;
   background: var(--primaryBackgroundColor, white);
+  overflow: visible;
   &.selected {
     background: var(--primaryBackgroundColor, white);
     &:after {

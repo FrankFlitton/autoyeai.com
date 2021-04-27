@@ -9,7 +9,7 @@ const KanyeSelectorWrapper = () => {
   // const { dataSet } = useContext(GeneratorContext)
 
   return (
-    <Container id="generate">
+    <Container id="generate" className="clip">
       <Row align={'flex-start'}>
         <Col xs={12} md={6}>
           <KanyeSelector />

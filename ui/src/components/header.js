@@ -1,7 +1,8 @@
 import { useContext } from "react";
 import styled from "styled-components"
 import { GeneratorContext } from '../state/generator'
-import { Container, Row, Col } from "./grid"
+import * as Grid from "./grid"
+import Icons from "./icons"
 
 const StyledHeader = styled.header`
   height: 53px;
@@ -15,8 +16,11 @@ const StyledHeader = styled.header`
   position: fixed;
   z-index: 999;
   .actions {
-    position: fixed;
-    padding: 0 1em;
+    button, a {
+      background: none;
+      border: none;
+      outline: none;
+    }
   }
 `;
 
@@ -36,20 +40,47 @@ const Header = () => {
 
   return (
     <StyledHeader>
-      <Container>
-        <Row>
-          <Col>
+      <Grid.Container>
+        <Grid.Row>
+          <Grid.Col>
             <H1>AutoYe Ai</H1>
-          </Col>
-          <Col justify="flex-end">
-            <span>What would Ye do?</span>
-            <span>Menu</span>
-          </Col>
-        </Row>
-      </Container>
-      <div className="actions">
-        <button onClick={() => handleClick(dark)}>dark: {dark ? 'true' : 'false'}</button>
-      </div>
+          </Grid.Col>
+          <Grid.Col justify="flex-end">
+            <span
+              className="d-none d-md-flex"
+            >
+              What would Ye do?
+            </span>
+            <div className="actions pl-1">
+              <button
+                href="_none"
+                onClick={() => handleClick(dark)}
+                title={`Toggle dark mode ${dark ? "off" : "on"}.`}
+              >
+                <img
+                  width="24"
+                  role="button"
+                  alt={`Toggle dark mode ${dark ? "off" : "on"}.`}
+                  src={Icons.darkButton(dark ? 'white' : 'black')}
+                />
+              </button>
+              <a
+                href="#shop-url"
+                target="_blank"
+                onClick={() => handleClick(dark)}
+                className="ml-1"
+              >
+                <img
+                  width="24"
+                  role="link"
+                  alt={`Visit the Auto Ye store!`}
+                  src={Icons.shop(dark ? 'white' : 'black')}
+                />
+              </a>
+            </div>
+          </Grid.Col>
+        </Grid.Row>
+      </Grid.Container>
     </StyledHeader>
   );
 }

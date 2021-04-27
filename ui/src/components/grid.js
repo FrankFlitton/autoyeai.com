@@ -48,21 +48,32 @@ const propInitials = (property) => {
     : ''
 }
 
-const helpers = (property, value, unit) => {
+const helpers = (property, value, unit, aliasValue) => {
   if (property && value) {
     if (!unit) unit = ''
+    const className = aliasValue
+      ? `.${value},
+         .${propInitials(value)}`
+      : `.${property}-${value},
+         .${propInitials(property)}-${value}`
+
+    function responsiveClassName (vw) {
+      return aliasValue
+      ? `.${value}-${vw},
+         .${propInitials(className)}-${vw}`
+      : `.${property}-${vw}-${value},
+         .${propInitials(property)}-${vw}-${value}`
+    }
 
     const base = `
-      .${property}-${value},
-      .${propInitials(property)}-${value}
+      ${className}
       {
         ${property}: ${value}${unit} !important;
       }`
 
     const breakpoints = Object.keys(sizes).map(vw => {
       return `@media (min-width: ${sizes[vw]}) {
-        .${property}-${vw}-${value},
-        .${propInitials(property)}-${vw}-${value}
+        ${responsiveClassName(vw)}
         {
           ${property}: ${value}${unit} !important;
         }
@@ -91,13 +102,18 @@ const AppContainer = styled.div`
   --secondaryBackgroundColor: ${props => props.dark ? 'white' : 'black'};
   --darkFilter: ${props => props.dark ? 'invert(1) hue-rotate(180deg)' : 'invert(0) hue-rotate(0deg)'};
 
+  width: 100%;
+  color: var(--primaryTextColor);
+  background: var(--secondaryTextColor);
+
   .darkFilter {
     filter: var(--darkFilter, invert(0), hue-rotate(180deg))
   }
 
-  width: 100%;
-  color: var(--primaryTextColor);
-  background: var(--secondaryTextColor);
+  .clip {
+    overflow: clip;
+  }
+
 
   /* Compute for global css helpers.
 
@@ -116,6 +132,9 @@ const AppContainer = styled.div`
   ${helpers('display', 'block')}
   ${helpers('display', 'inline')}
   ${helpers('display', 'inline-block')}
+
+  ${helpers('position', 'relative', '', true)}
+  ${helpers('position', 'absolute', '', true)}
 
   ${helpers('width', '100', '%')}
 
