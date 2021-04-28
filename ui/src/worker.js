@@ -41,13 +41,14 @@ addEventListener("message", async e => {
   if (e.data.startsWith("Generate Data")) {
     const data = e.data.split('|')
     const dataSet = data[1] ? data[1] : ''
-    let newSeed = []
+    let dataLoaded = true
 
     if (!textData) {
       const loadingData = await getData(dataSet, textData)
+      dataLoaded = !!loadingData ? true : false
     }
 
-    if (seed.length === 0 && !!textData) {
+    if (seed.length === 0 && !!textData && dataLoaded) {
       const loadingNewSeed = await getSeed('', textData)
       // loadingNewSeed
       postMessage('Generate Seed|' + loadingNewSeed[0])
