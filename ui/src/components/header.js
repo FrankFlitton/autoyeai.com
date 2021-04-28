@@ -64,10 +64,9 @@ const Header = () => {
                   src={Icons.darkButton(dark ? 'white' : 'black')}
                 />
               </button>
-              <a
+              {/* <a
                 href="#shop-url"
                 target="_blank"
-                onClick={() => handleClick(dark)}
                 className="ml-1"
               >
                 <img
@@ -76,7 +75,7 @@ const Header = () => {
                   alt={`Visit the Auto Ye store!`}
                   src={Icons.shop(dark ? 'white' : 'black')}
                 />
-              </a>
+              </a> */}
             </div>
           </Grid.Col>
         </Grid.Row>
