@@ -16,18 +16,18 @@ const LyricSheet = styled.div`
 `
 
 const LyricsViewer = ({value}) => {
-  const {censor, payload} = useContext(GeneratorContext)
+  const {censor} = useContext(GeneratorContext)
 
   function censorText (word) {
     return censorWord(word)
   }
-  if (!payload) {
+  if (!value) {
     return (<LyricSheet>No Data!</LyricSheet>)
   }
   return (
     <LyricSheet>
-      { payload.length > 1
-        ? payload.map((word, i) => (
+      { value.length > 1
+        ? value.map((word, i) => (
           <span key={word + i}>{
             word === '\n'
               ? <><br /><br /></>

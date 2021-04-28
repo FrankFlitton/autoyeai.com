@@ -5,7 +5,7 @@ import { Row, Col } from './grid'
 import LyricsViewer from './lyricsViewer'
 
 const KanyeActions = () => {
-  const { seed, setSeed, dataSet, payload, setPayload } = useContext(GeneratorContext)
+  const {seed, setSeed, dataSet} = useContext(GeneratorContext)
   const spellcheck = speller
 
   const [localPayload, setLocalPayload] = useState([''])
@@ -41,7 +41,7 @@ const KanyeActions = () => {
           oldState = [...oldState, ...[isSentenceEnd[0], '\n', '']]
         } else if (oldState[oldState.length - 1] === '') {
           // New line if two empty chars
-          oldState = [...oldState, ...['\n'], [next]]
+          oldState = [...oldState, ...['\n', next, '']]
         } else {
           oldState = [...oldState, ...[next]]
         }
@@ -57,7 +57,6 @@ const KanyeActions = () => {
     // Check to correct
     if (isFinished) prevWord = localPayload[localPayload.length - 1]
     if (isFinished || (char.match(/[ \n]/g) && prevWord !== '')) {
-    // if (isFinished || (char.match(/[ \n]/g))) {
       setCorrectedText(prevState => {
         return char === '\n'
           ? [...prevState, ...[fixWord(prevWord), '\n']]
@@ -65,13 +64,6 @@ const KanyeActions = () => {
       })
     }
   }
-
-  useCallback(() => {
-    const lastWord = localPayload[localPayload.length - 1]
-    const newPayload = [...correctedText, ...[lastWord]]
-    if (localPayload.length > correctedText.length) setPayload(newPayload)
-  // eslint-disable-next-line
-  }, [localPayload, correctedText])
 
   const abort = () => {
     webWorker.terminate()
@@ -176,6 +168,11 @@ const KanyeActions = () => {
     return correctedWord
   }
 
+  function typedText (correctedText, localPayload) {
+    const lastWord = localPayload[localPayload.length - 1]
+    return [...correctedText, ...[lastWord]]
+  }
+
   useEffect(() => {
     if (seed === '') setupWebWorker()
   // eslint-disable-next-line
@@ -193,9 +190,9 @@ const KanyeActions = () => {
         global payload: <br />
       </Col>
       <Col cols={12}> {
-        payload === null
+        correctedText === null
           ? 'Broken'
-          : <LyricsViewer />
+          : <LyricsViewer value={ typedText(correctedText, localPayload) } />
       }
       </Col>
       <Col cols={12} sm={6}>
