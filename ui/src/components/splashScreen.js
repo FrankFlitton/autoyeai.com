@@ -55,14 +55,19 @@ const SplashFullscreen = styled.div`
       &:nth-child(3)  {
         /* .animated-text-container > div > div:nth-child(1) */
         color: var(--secondaryTextColor, white);
-        -webkit-text-stroke-color: 1px;
-        -webkit-text-stroke-width: 1px;
-        -webkit-text-stroke: 1px var(--primaryTextColor, black);
+        -webkit-text-stroke-color: var(--primaryTextColor, black);
+        -webkit-text-stroke-width: 0.5px;
+        -webkit-text-stroke: 0.5px var(--primaryTextColor, black);
         text-shadow:
           -1px -1px 0 var(--primaryTextColor, black),
           1px -1px 0 var(--primaryTextColor, black),
           -1px 1px 0 var(--primaryTextColor, black),
           1px 1px 0 var(--primaryTextColor, black);
+        @media (min-width: ${sizes.sm}) {
+          -webkit-text-stroke-color: var(--primaryTextColor, black);
+          -webkit-text-stroke-width: 1px;
+          -webkit-text-stroke: 1px var(--primaryTextColor, black);
+        }
       }
       &:nth-child(2)  {
         color: var(--primaryTextColor, black) !important;
@@ -129,7 +134,7 @@ const SplashScreen = () => {
       <Container>
         <Row justify={'center'}>
           <Col className="pb-0">
-            <h2 className="mb-0">kanye west × ai</h2>
+            <h2 className="mb-0">lyrical genius × ai</h2>
           </Col>
         </Row>
         <Row className="layers">
@@ -167,7 +172,7 @@ const SplashScreen = () => {
               </Col>
             </Row>
             <Row align={'flex-end'}>
-              <Col offset={6} cols={3} align={'end'}>
+              <Col offset-xs={4} offset-md={6} cols={3} align={'end'}>
                 <p className="subtitle m-0">
                   A fluid stream of artificial consciousness.
                 </p>
