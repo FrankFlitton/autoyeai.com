@@ -1,0 +1,15 @@
+[build]
+  base = "ui"
+  publish = "dist"
+  command = "npm run build"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  # Define which paths this specific [[headers]] block will cover.
+  for = "/models/*"
+    [headers.values]
+    Access-Control-Allow-Origin = "https://autoyeai.com"
