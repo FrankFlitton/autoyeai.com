@@ -17,7 +17,6 @@ const KanyeActions = () => {
 
   function updatePayload (char) {
     let prevWord = ''
-    console.log('prevState', 'triggered')
 
     // Local Payload
     setLocalPayload((prevState) => {
@@ -105,7 +104,6 @@ const KanyeActions = () => {
           // correctText(data)
         } else if (event.data.includes('Generate Seed|')) {
           const data = event.data.split('Generate Seed|')[1]
-          console.log('returned seed', data)
 
           if (!!data.length) {
             setSeed(data)

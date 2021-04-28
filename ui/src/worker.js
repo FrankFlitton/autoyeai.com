@@ -8,10 +8,6 @@ addEventListener("message", async e => {
   var model;
   var seed = [];
 
-  // console.log('worker state', textData,
-  // model,
-  // seed,)
-
   async function getSeed (s, t) {
     const NewSeed = await makeSeed(s, t)
     seed = NewSeed;
@@ -47,22 +43,15 @@ addEventListener("message", async e => {
     const dataSet = data[1] ? data[1] : ''
     let newSeed = []
 
-    console.log(dataSet)
-
     if (!textData) {
-      console.log('loading data...')
       const loadingData = await getData(dataSet, textData)
-      console.log('data', !!loadingData)
     }
-    console.log('loaded. check seed', seed)
-    console.log('loaded. check textData', textData)
+
     if (seed.length === 0 && !!textData) {
-      console.log('returned seed, generate', seed[0])
       const loadingNewSeed = await getSeed('', textData)
       // loadingNewSeed
       postMessage('Generate Seed|' + loadingNewSeed[0])
     }
-    console.log('seeded.', seed.length, newSeed.length)
     if (model && !!seed.length && textData) {
       generate(seed, textData, model, (c) => postMessage( c ))
         .then(text => {
