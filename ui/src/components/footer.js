@@ -12,17 +12,26 @@ const StyledFooter = styled.footer`
 
 const Footer = () => {
 
-  function getYear () {
-    const d = new Date();
-    return d.getFullYear();
-  }
+  // function getYear () {
+  //   const d = new Date();
+  //   return d.getFullYear();
+  // }
 
   return (
     <StyledFooter>
       <Container>
         <Row>
-          <Col>
-            © { getYear() }&ensp;<a href="https://frankflitton.com/">Frank Flitton</a>
+          <Col cols={12}>
+            <p>
+              Fan art and web app code made with love by
+              <a
+                href="https://frankflitton.com/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Frank Flitton
+              </a>
+            .</p>
           </Col>
         </Row>
       </Container>
