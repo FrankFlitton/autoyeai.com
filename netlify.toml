@@ -1,6 +1,6 @@
 [build]
   base = "ui"
-  publish = "dist"
+  publish = "build"
   command = "npm run build"
 
 [[redirects]]
