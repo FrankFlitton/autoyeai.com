@@ -5,7 +5,6 @@ import { DataSets } from "./data";
 const initialState = {
   seed: '',
   dataSet: DataSets[0],
-  payload: [''],
   censor: true,
   dark: false,
 };
@@ -13,7 +12,6 @@ const initialState = {
 const actions = {
   SET_SEED: "SET_SEED",
   SET_DATASET: "SET_DATASET",
-  SET_PAYLOAD: "SET_PAYLOAD",
   SET_CENSOR: "SET_CENSOR",
   SET_DARK: "SET_DARK",
   RESET: "RESET",
@@ -25,8 +23,6 @@ function reducer(state, action) {
       return { ...state, seed: action.value };
     case actions.SET_DATASET:
       return { ...state, dataSet: action.value };
-    case actions.SET_PAYLOAD:
-      return { ...state, payload: action.value };
     case actions.SET_CENSOR:
       return { ...state, censor: action.value };
     case actions.SET_DARK:
@@ -46,7 +42,6 @@ export function GeneratorProvider ({ children }) {
   const value = {
     seed: state.seed,
     dataSet: state.dataSet,
-    payload: state.payload,
     censor: state.censor,
     dark: state.dark,
     setSeed: value => {
@@ -54,9 +49,6 @@ export function GeneratorProvider ({ children }) {
     },
     setDataSet: value => {
       dispatch({ type: actions.SET_DATASET, value });
-    },
-    setPayload: value => {
-      dispatch({ type: actions.SET_PAYLOAD, value });
     },
     setCensor: value => {
       dispatch({ type: actions.SET_CENSOR, value });
