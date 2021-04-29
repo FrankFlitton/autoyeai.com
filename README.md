@@ -9,6 +9,7 @@ An attempt to make a Kanye West lyrics generator.
 - [x] Web scraper with failover
 - [x] Create tagged data set of major releases and text file
 - [x] Train model with vocabulary
-- [ ] Expose model in a web UI
-- [ ] Create spellcheck output with custom vocabulary to account for randomness
-- [ ] NSFW "Calm Ye" mode
+- [ ] Expose model in a web UI (WIP)
+- [x] Create spellcheck output with custom vocabulary to account for randomness
+- [x] NSFW "Calm Ye" mode
+- [ ] Train Era specific models (2/5)
