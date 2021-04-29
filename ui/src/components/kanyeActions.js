@@ -68,6 +68,7 @@ const KanyeActions = () => {
     webWorker.terminate()
     webWorker.postMessage("Abort")
     console.log('Sent Abort')
+    alert('AI down! refresh the page.')
   }
 
   const runGenerate = () => {
@@ -78,16 +79,9 @@ const KanyeActions = () => {
       webWorker.postMessage(`Generate Data|${dataSet.id}`)
     }, 200);
 
-    // webWorker.postMessage(`Load Data|${dataSet.id}`)
-
-
     setIsFinished(false)
     setIsLoaded(true)
-
-    // window.addEventListener("beforeunload", () => {
-    //   webWorker.terminate()
-    // })
-    return;
+    return; // required for mobile safari
   }
 
   const setupWebWorker = useCallback(() => {
