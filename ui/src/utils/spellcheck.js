@@ -43,7 +43,7 @@ speller.countKeys = function (object) {
 	return count;
 };
 
-// A helper function that returns the word with the most occurences in the language
+// A helper function that returns the word with the most occurrences in the language
 // model, among the supplied candidates.
 speller.max = function (candidates) {
 	var candidate, arr = [];
