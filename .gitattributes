@@ -1,3 +1,6 @@
+ui/public/models/** filter=lfs diff=lfs merge=lfs -text
+data/rawData/** filter=lfs diff=lfs merge=lfs -text
+data/cleanData/** filter=lfs diff=lfs merge=lfs -text
 data/cleanData** filter=lfs diff=lfs merge=lfs -text
 data/rawData** filter=lfs diff=lfs merge=lfs -text
 ui/public/models** filter=lfs diff=lfs merge=lfs -text

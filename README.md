@@ -4,6 +4,8 @@
 
 An attempt to make a Kanye West lyrics generator.
 
+Large model files and data results are managed with [Git LFS](https://git-lfs.github.com/).
+
 ## Roadmap
 - [x] Collect links from genius.com containing lyrics
 - [x] Web scraper with failover
