@@ -10,6 +10,8 @@
 
 [[headers]]
   # Define which paths this specific [[headers]] block will cover.
-  for = "/models/*"
+  for = "models/*"
     [headers.values]
     Access-Control-Allow-Origin = "https://autoyeai.com"
+    Referrer-Policy = "origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"
