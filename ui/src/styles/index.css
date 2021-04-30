@@ -34,6 +34,19 @@ a {
   box-sizing: content-box !important;
 }
 
+.disabled {
+  position: relative;
+  opacity: 0.75;
+}
+.disabled::before {
+ content: ' ';
+ position: absolute;
+ width: 100%;
+ height: 100%;
+ z-index: 3;
+ background: transparent;
+}
+
 /* debug */
 /* * {
   background: #FF00F011;

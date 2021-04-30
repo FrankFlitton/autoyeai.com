@@ -3,6 +3,7 @@ import styled from "styled-components"
 import { GeneratorContext } from '../state/generator'
 import * as Grid from "./grid"
 import Icons from "./icons"
+import { H1 } from "./typography"
 
 const StyledHeader = styled.header`
   height: 53px;
@@ -23,11 +24,6 @@ const StyledHeader = styled.header`
     }
   }
 `;
-
-const H1 = styled.h1`
-  font-size: 18px;
-  font-weight: 500;
-`
 
 const Header = () => {
   const { dark, setDark } = useContext(GeneratorContext)

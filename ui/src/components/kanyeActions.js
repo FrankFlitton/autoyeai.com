@@ -3,17 +3,25 @@ import { GeneratorContext } from '../state/generator'
 import speller from '../utils/spellcheck'
 import { Row, Col } from './grid'
 import LyricsViewer from './lyricsViewer'
+import { H3 } from './typography'
 
 const KanyeActions = () => {
-  const {seed, setSeed, dataSet} = useContext(GeneratorContext)
+  const {seed, setSeed, dataSet, isGenerating, setIsGenerating} = useContext(GeneratorContext)
   const spellcheck = speller
 
   const [localPayload, setLocalPayload] = useState([''])
   const [correctedText, setCorrectedText] = useState([''])
   const [isSpellerTrained, setIsSpellerTrained] = useState(false)
+  const [webWorker, setWebWorker] = useState(makeWorker())
   const [isFinished, setIsFinished] = useState(false)
+  // dev debugging
+  // eslint-disable-next-line no-unused-vars
   const [isLoaded, setIsLoaded] = useState(false)
-  const [webWorker] = useState(new Worker('../worker.js', { type: 'module' }))
+
+  function makeWorker () {
+    const worker = new Worker('../worker.js', { type: 'module' })
+    return worker
+  }
 
   function updatePayload (char) {
     let prevWord = ''
@@ -64,16 +72,25 @@ const KanyeActions = () => {
     }
   }
 
+  // dev debugging
+  // eslint-disable-next-line
   const abort = () => {
+    webWorker.removeEventListener("message", () => {})
     webWorker.terminate()
-    webWorker.postMessage("Abort")
-    console.log('Sent Abort')
-    alert('AI down! refresh the page.')
+
+    setWebWorker(() => {return makeWorker()})
+
+    setTimeout(() => {
+      setupWebWorker()
+      setIsFinished(true)
+      setIsGenerating(false)
+    }, 100);
   }
 
   const runGenerate = () => {
     if (dataSet.id === undefined) return;
     console.log('dataSet.id', dataSet.id)
+    webWorker.postMessage("Load Data|allYe")
 
     setTimeout(() => {
       webWorker.postMessage(`Generate Data|${dataSet.id}`)
@@ -93,6 +110,7 @@ const KanyeActions = () => {
         if (event.data.includes('Text Generation Finished|')) {
           const data = event.data.split('Text Generation Finished|')[1]
           setIsFinished(true)
+          setIsGenerating(false)
           updatePayload(data)
           // webWorker.terminate()
           // correctText(data)
@@ -128,6 +146,7 @@ const KanyeActions = () => {
         updatePayload(event.data)
       }
     })
+
     // Trigger data load + speller train
     // as a side effect
     webWorker.postMessage("Load Data|allYe")
@@ -167,27 +186,35 @@ const KanyeActions = () => {
 
   useEffect(() => {
     if (seed === '') setupWebWorker()
+    console.log('seed', seed)
   // eslint-disable-next-line
   }, [seed])
 
+  useEffect(() => {
+    if (isGenerating) runGenerate()
+    console.log('seed', seed)
+  // eslint-disable-next-line
+  }, [isGenerating])
+
   return (
     <Row>
+      <Col cols={12}>
+      <H3>{ dataSet.title } × ai</H3>
+      </Col>
+      <Col cols={12}>
+        {
+          correctedText === null
+            ? 'Broken'
+            : <LyricsViewer value={ typedText(correctedText, localPayload) } />
+        }
+      </Col>
+      {/* For Debugging:
       <Col xs={12}><button onClick={() => abort()}>abort</button></Col>
-      <Col xs={12}><button onClick={() => runGenerate()}>gen</button></Col>
       <Col cols={12}>
         Is loaded: { isLoaded.toString() } <br />
         seed: { seed }
       </Col>
-      <Col cols={12}>
-        global payload: <br />
-      </Col>
-      <Col cols={12}> {
-        correctedText === null
-          ? 'Broken'
-          : <LyricsViewer value={ typedText(correctedText, localPayload) } />
-      }
-      </Col>
-      <Col cols={12} sm={6}>
+       <Col cols={12} sm={6}>
         <div>
           <p>payload</p>
           <p>{ JSON.stringify(localPayload) }</p>
@@ -196,7 +223,7 @@ const KanyeActions = () => {
           <p>corrected</p>
           <p>{ JSON.stringify(correctedText) }</p>
         </div>
-      </Col>
+      </Col> */}
     </Row>
   )
 }

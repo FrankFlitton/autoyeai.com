@@ -5,10 +5,12 @@
   "dependencies": {
     "@mdi/js": "^5.9.55",
     "@tensorflow/tfjs": "^2.6.0",
+    "array-shuffle": "^2.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
     "styled-components": "^5.2.3",
+    "typewriter-effect": "^2.17.0",
     "web-vitals": "^1.1.1"
   },
   "scripts": {

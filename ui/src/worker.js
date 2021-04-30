@@ -4,6 +4,7 @@ import { loadData } from './data/loadData'
 
 // eslint-disable-next-line no-restricted-globals
 addEventListener("message", async e => {
+  console.log('new worker message:\n', e.data)
   var textData;
   var model;
   var seed = [];
