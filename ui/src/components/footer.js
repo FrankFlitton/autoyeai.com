@@ -23,7 +23,7 @@ const Footer = () => {
         <Row>
           <Col cols={12}>
             <p>
-              Fan art and web app code by&nbsp;
+              Fan art and web app by&nbsp;
               <a
                 href="https://frankflitton.com/"
                 target="_blank"
