@@ -12,6 +12,9 @@
   # Define which paths this specific [[headers]] block will cover.
   for = "models/*"
     [headers.values]
-    Access-Control-Allow-Origin = "https://autoyeai.com"
-    Referrer-Policy = "origin-when-cross-origin"
+    access-control-allow-origin = "https://autoyeai.com"
+    Referrer-Policy = "strict-origin-when-cross-origin"
     X-Frame-Options = "SAMEORIGIN"
+    content-security-policy = "script-src autoyeai.com *.autoyeai.com; base-uri * 'self'; worker-src *.autoyeai.com blob: ;"
+    content-type = "text/html; charset=utf-8"
+    content-encoding = "gzip"
