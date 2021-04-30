@@ -1,7 +1,7 @@
 const DataSets = [
   {id: 'allYe', title: 'All Ye', min: 0, max: 9010},
   {id: 'graduation', title: 'Graduation', min: 0, max: 3550},
-  {id: 'runaway', title: 'Dark Fantasy', min: 3552, max: 6240 },
+  {id: 'darkFantasy', title: 'Dark Fantasy', min: 3552, max: 6240 },
   {id: 'yeezus', title: 'Yeezus', min: 6242, max: 8178},
   {id: 'saintYe', title: 'Saint Ye', min: 8180, max: 9010},
 ]

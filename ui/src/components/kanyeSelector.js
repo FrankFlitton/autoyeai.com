@@ -15,8 +15,8 @@ const SelectorContainer = styled.div`
   &.graduation {
     background-image: url('/img/graduationText.svg');
   }
-  &.runaway {
-    background-image: url('/img/runawayText.svg');
+  &.darkFantasy {
+    background-image: url('/img/darkFantasyText.svg');
   }
   &.yeezus {
     background-image: url('/img/yeezusText.svg');
