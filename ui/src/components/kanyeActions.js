@@ -39,18 +39,13 @@ const KanyeActions = () => {
         oldState.pop()
         oldState.pop()
         oldState.push('\n')
-      } else if (char.match(/[ ,?!]/g)) {
-        let next = char.match(/[ ,?!]/g)[0] === ' ' ? '' : char.match(/[ ,?!-–—]/g)[0]
-
+      } else if (char.match(/[ ,?!-–—]/g)) {
+        let next = char.match(/[ ,?!-–—]/g)[0] === ' ' ? '' : ''
         const isSentenceEnd = char.match(/[?!.]/)
         if (isSentenceEnd) {
-          // New line if punctuation
-          oldState = [...oldState, ...[isSentenceEnd[0], '\n', '']]
-        } else if (oldState[oldState.length - 1] === '') {
-          // New line if two empty chars
-          oldState = [...oldState, ...['\n', next, '']]
+          oldState = [...oldState, ...[char, '\n', next]]
         } else {
-          oldState = [...oldState, ...[next]]
+          oldState = [...oldState, ...[char, next]]
         }
       } else {
         const newState = [...oldState]
