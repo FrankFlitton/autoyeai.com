@@ -32,13 +32,6 @@ const KanyeActions = () => {
       if (char.match(/[ \n]/g)) prevWord = oldState[oldState.length - 1]
       if (char === '\n') {
         return [...prevState, ...[char, '']]
-      } else if (
-        oldState[oldState.length - 1] === '' &&
-        oldState[oldState.length - 2] === ''
-      ) {
-        oldState.pop()
-        oldState.pop()
-        oldState.push('\n')
       } else if (char.match(/[ ,?!-–—]/g)) {
         let next = char.match(/[ ,?!-–—]/g)[0] === ' ' ? '' : ''
         const isSentenceEnd = char.match(/[?!.]/)
@@ -52,6 +45,17 @@ const KanyeActions = () => {
         const lastToken = newState.pop()
         oldState = [...newState, ...[lastToken + char]]
       }
+
+      if (
+        oldState[oldState.length - 1] === '' &&
+        oldState[oldState.length - 2] === ''
+      ) {
+        oldState.pop()
+        oldState.pop()
+        oldState.push('\n')
+        oldState.push('')
+      }
+
       // setPayload(oldState)
       return oldState
     })
