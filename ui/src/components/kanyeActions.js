@@ -9,7 +9,7 @@ const KanyeActions = () => {
   const {seed, setSeed, dataSet, isGenerating, setIsGenerating} = useContext(GeneratorContext)
   const spellcheck = speller
 
-  const [localPayload, setLocalPayload] = useState([''])
+  const [localPayload, setLocalPayload] = useState([])
   const [correctedText, setCorrectedText] = useState([''])
   const [isSpellerTrained, setIsSpellerTrained] = useState(false)
   const [webWorker, setWebWorker] = useState(makeWorker())
@@ -23,6 +23,58 @@ const KanyeActions = () => {
     return worker
   }
 
+  // const updatePayload = async (char) => {
+  //   let prevWord = ''
+
+  //   // Local Payload
+  //   await setLocalPayload(prevState => {
+  //     console.log(localPayload, char)
+  //     let oldState = [...prevState]
+
+  //     if (char.match(/[ \n]/g) && !isFinished) prevWord = oldState[oldState.length - 1]
+
+  //     if (char === '\n') {
+  //       oldState = [...oldState, ...[char, '']]
+  //     } else if (char.match(/[ ,?!-–—]/g)) {
+  //       const isSentenceEnd = char.match(/[?!.]/)
+  //       if (isSentenceEnd) {
+  //         oldState = [...oldState, ...[char, '\n', '']]
+  //       } else {
+  //         oldState = [...oldState, ...[char, '']]
+  //       }
+  //     } else {
+  //       const newState = [...oldState]
+  //       const lastToken = newState.pop()
+  //       oldState = [...newState, ...[lastToken + char]]
+  //     }
+
+  //     // if (oldState.length > 3) {
+  //     //   if (
+  //     //     oldState[oldState.length - 1] === '' &&
+  //     //     oldState[oldState.length - 2] === ''
+  //     //   ) {
+  //     //     oldState.pop()
+  //     //     oldState.pop()
+  //     //     oldState.push('\n')
+  //     //     oldState.push('')
+  //     //   }
+  //     // }
+
+  //     // setPayload(oldState)
+  //     return oldState
+  //   })
+
+  //   // Check to correct
+  //   if (isFinished) prevWord = localPayload[localPayload.length - 1]
+  //   if (isFinished || (char.match(/[ \n]/g) && prevWord !== '')) {
+  //     setCorrectedText(prevState => {
+  //       return char === '\n'
+  //         ? [...prevState, ...[fixWord(prevWord), '\n']]
+  //         : [...prevState, ...[fixWord(prevWord)]]
+  //     })
+  //   }
+  // }
+
   function updatePayload (char) {
     let prevWord = ''
 
@@ -32,32 +84,31 @@ const KanyeActions = () => {
       if (char.match(/[ \n]/g)) prevWord = oldState[oldState.length - 1]
       if (char === '\n') {
         return [...prevState, ...[char, '']]
-      } else if (char.match(/[ ,?!-–—]/g)) {
-        let next = char.match(/[ ,?!-–—]/g)[0] === ' ' ? '' : ''
+      } else if (
+        oldState[oldState.length - 1] === '' &&
+        oldState[oldState.length - 2] === ''
+      ) {
+        oldState.pop()
+        oldState.pop()
+        oldState.push('\n')
+      } else if (char.match(/[ ,?!]/g)) {
+        let next = char.match(/[ ,?!]/g)[0] === ' ' ? '' : char.match(/[ ,?!-–—]/g)[0]
+
         const isSentenceEnd = char.match(/[?!.]/)
         if (isSentenceEnd) {
-          oldState = [...oldState, ...[char, '\n', next]]
+          // New line if punctuation
+          oldState = [...oldState, ...[isSentenceEnd[0], '\n', '']]
+        } else if (oldState[oldState.length - 1] === '') {
+          // New line if two empty chars
+          oldState = [...oldState, ...['\n', next, '']]
         } else {
-          oldState = [...oldState, ...[char, next]]
+          oldState = [...oldState, ...[next]]
         }
       } else {
         const newState = [...oldState]
         const lastToken = newState.pop()
         oldState = [...newState, ...[lastToken + char]]
       }
-
-      // if (oldState.length > 3) {
-      //   if (
-      //     oldState[oldState.length - 1] === '' &&
-      //     oldState[oldState.length - 2] === ''
-      //   ) {
-      //     oldState.pop()
-      //     oldState.pop()
-      //     oldState.push('\n')
-      //     oldState.push('')
-      //   }
-      // }
-
       // setPayload(oldState)
       return oldState
     })
@@ -120,17 +171,23 @@ const KanyeActions = () => {
 
           if (!!data.length) {
             setSeed(data)
-            let seedTokens = data.split(/[\n ]/g)
+
+            let spacedSeedTokens = data.replace(/\n/g, ' \n ')
+            let seedTokens = spacedSeedTokens.split(' ')
             const lastToken = seedTokens.pop()
             const correctedSeed = seedTokens.map(word => fixWord(word))
 
             setLocalPayload(seedTokens)
-            updatePayload(' ')
-            setCorrectedText(correctedSeed)
 
-            for (let index = 0; index < lastToken.length; index++) {
-              updatePayload(lastToken[index])
-            }
+            setTimeout(() => {
+              console.log('setlocal', localPayload)
+              updatePayload(' ')
+              setCorrectedText(correctedSeed)
+
+              for (let index = 0; index < lastToken.length; index++) {
+                updatePayload(lastToken[index])
+              }
+            }, 0);
           }
 
         } else if (event.data.includes('TextData|')) {
@@ -187,13 +244,11 @@ const KanyeActions = () => {
 
   useEffect(() => {
     if (seed === '') setupWebWorker()
-    console.log('seed', seed)
   // eslint-disable-next-line
   }, [seed])
 
   useEffect(() => {
     if (isGenerating) runGenerate()
-    console.log('seed', seed)
   // eslint-disable-next-line
   }, [isGenerating])
 
