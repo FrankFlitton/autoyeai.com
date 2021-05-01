@@ -46,17 +46,17 @@ const KanyeActions = () => {
         oldState = [...newState, ...[lastToken + char]]
       }
 
-      if (oldState.length > 3) {
-        if (
-          oldState[oldState.length - 1] === '' &&
-          oldState[oldState.length - 2] === ''
-        ) {
-          oldState.pop()
-          oldState.pop()
-          oldState.push('\n')
-          oldState.push('')
-        }
-      }
+      // if (oldState.length > 3) {
+      //   if (
+      //     oldState[oldState.length - 1] === '' &&
+      //     oldState[oldState.length - 2] === ''
+      //   ) {
+      //     oldState.pop()
+      //     oldState.pop()
+      //     oldState.push('\n')
+      //     oldState.push('')
+      //   }
+      // }
 
       // setPayload(oldState)
       return oldState
