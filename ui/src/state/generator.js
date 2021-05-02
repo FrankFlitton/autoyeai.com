@@ -8,6 +8,7 @@ const initialState = {
   censor: true,
   dark: false,
   isGenerating: false,
+  isDev: window.location.href.includes('localhost'),
 };
 
 const actions = {
@@ -49,6 +50,7 @@ export function GeneratorProvider ({ children }) {
     censor: state.censor,
     dark: state.dark,
     isGenerating: state.isGenerating,
+    isDev: state.isDev,
     setSeed: value => {
       dispatch({ type: actions.SET_SEED, value });
     },
