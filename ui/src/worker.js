@@ -20,7 +20,7 @@ addEventListener("message", async e => {
     const [t, m] = await loadData(modelName)
     textData = t
     model = m
-    postMessage(`TextData|${t.textString_}`)
+    postMessage(`TextData|true`)
     return t;
   }
 
