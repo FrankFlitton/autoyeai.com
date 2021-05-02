@@ -40,6 +40,9 @@ const KanyeActions = () => {
         // New line at sentence end
         if (char.match(/[?!.]/)) {
           oldState = [...oldState, ...[char, '\n', '']]
+        } else if (char.match(/['']/)) {
+          // ignore single quotes
+          return [...oldState]
         } else {
           oldState = [...oldState, ...[char, '']]
         }
@@ -218,7 +221,7 @@ const KanyeActions = () => {
             : <LyricsViewer value={ typedText(correctedText, localPayload) } />
         }
       </Col>
-      {/* For Debugging:
+      For Debugging:
       <Col xs={12}><button onClick={() => abort()}>abort</button></Col>
       <Col cols={12}>
         Is loaded: { isLoaded.toString() } <br />
@@ -233,7 +236,7 @@ const KanyeActions = () => {
           <p>corrected</p>
           <p>{ JSON.stringify(correctedText) }</p>
         </div>
-      </Col> */}
+      </Col>
     </Row>
   )
 }
