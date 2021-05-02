@@ -6,7 +6,7 @@ import LyricsViewer from './lyricsViewer'
 import { H3 } from './typography'
 
 const KanyeActions = () => {
-  const {seed, setSeed, dataSet, isGenerating, setIsGenerating} = useContext(GeneratorContext)
+  const {seed, setSeed, dataSet, isGenerating, setIsGenerating, isDev} = useContext(GeneratorContext)
   const spellcheck = speller
 
   const [localPayload, setLocalPayload] = useState([])
@@ -14,8 +14,6 @@ const KanyeActions = () => {
   const [isSpellerTrained, setIsSpellerTrained] = useState(false)
   const [webWorker, setWebWorker] = useState(makeWorker())
   const [isFinished, setIsFinished] = useState(false)
-  // dev debugging
-  // eslint-disable-next-line no-unused-vars
   const [isLoaded, setIsLoaded] = useState(false)
 
   function makeWorker () {
@@ -78,8 +76,6 @@ const KanyeActions = () => {
     }
   }
 
-  // dev debugging
-  // eslint-disable-next-line
   const abort = () => {
     webWorker.removeEventListener("message", () => {})
     webWorker.terminate()
@@ -221,22 +217,24 @@ const KanyeActions = () => {
             : <LyricsViewer value={ typedText(correctedText, localPayload) } />
         }
       </Col>
-      {/* For Debugging:
-      <Col xs={12}><button onClick={() => abort()}>abort</button></Col>
-      <Col cols={12}>
-        Is loaded: { isLoaded.toString() } <br />
-        seed: { seed }
-      </Col>
-      <Col cols={12} sm={6}>
-        <div>
-          <p>payload</p>
-          <p>{ JSON.stringify(localPayload) }</p>
-        </div>
-        <div>
-          <p>corrected</p>
-          <p>{ JSON.stringify(correctedText) }</p>
-        </div>
-      </Col> */}
+      { isDev ?
+        <><Col xs={12}><button onClick={() => abort()}>abort</button></Col>
+        <Col cols={12}>
+          Is loaded: { isLoaded.toString() } <br />
+          seed: { seed }
+        </Col>
+        <Col cols={12} sm={6}>
+          <div>
+            <p>payload</p>
+            <p>{ JSON.stringify(localPayload) }</p>
+          </div>
+          <div>
+            <p>corrected</p>
+            <p>{ JSON.stringify(correctedText) }</p>
+          </div>
+        </Col> </>
+        : <></>
+      }
     </Row>
   )
 }
