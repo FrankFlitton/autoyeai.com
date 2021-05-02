@@ -30,27 +30,25 @@ const KanyeActions = () => {
     setLocalPayload((prevState) => {
       let oldState = [...prevState]
       if (char.match(/[ \n]/g)) prevWord = oldState[oldState.length - 1]
+
+      // routines for special characters
       if (char === '\n') {
         return [...prevState, ...[char, '']]
       } else if (char === ' ') {
         return [...prevState, '']
-      } else if (char.match(/[ ,?!]/)) {
-        let next = char.match(/[ ,?!]/)[0] === ' ' ? '' : char.match(/[ ,?!-–—]/g)[0]
-
-        const isSentenceEnd = char.match(/[?!.]/)
-        if (isSentenceEnd) {
-          // New line if punctuation
-          oldState = [...oldState, ...[isSentenceEnd[0], '\n', '']]
-        } else if (oldState[oldState.length - 1] === '') {
-          // New line if two empty chars
-          oldState = [...oldState, ...['\n', next, '']]
+      } else if (char.match(/[^a-z^A-Z^0-9]/)) {
+        // New line at sentence end
+        if (char.match(/[?!.]/)) {
+          oldState = [...oldState, ...[char, '\n', '']]
         } else {
-          oldState = [...oldState, ...[next]]
+          oldState = [...oldState, ...[char, '']]
         }
       } else {
         const newState = [...oldState]
         const lastToken = newState.pop()
-        oldState = [...newState, ...[lastToken + char]]
+        const isNewLine = newState.length - 1 === '\n'
+        const newChar = isNewLine ? char.toUpperCase() : char
+        oldState = [...newState, ...[lastToken + newChar]]
       }
 
       if (
@@ -145,22 +143,25 @@ const KanyeActions = () => {
 
         } else if (event.data.includes('TextData|')) {
           setIsLoaded(true)
-          if (!isSpellerTrained) {
-            const data = event.data.split('TextData|')[1]
-            if (data.length) {
-              setIsSpellerTrained(true)
-              spellcheck.train(data)
-            }
-          }
         }
       } else {
         updatePayload(event.data)
       }
     })
 
-    // Trigger data load + speller train
-    // as a side effect
+    // Trigger data load
     webWorker.postMessage("Load Data|allYe")
+
+    // Train speller
+    if (!isSpellerTrained) {
+      fetch('/models/allYe/data.txt')
+        .then(response => response.text())
+        .then((text) => {
+          spellcheck.train(text)
+          setIsSpellerTrained(true)
+        })
+        .catch(e => console.error(e))
+    }
 
   // eslint-disable-next-line
   }, [])
