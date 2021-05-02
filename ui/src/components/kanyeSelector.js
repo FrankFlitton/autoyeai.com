@@ -9,6 +9,21 @@ const SelectorContainer = styled.div`
   background-repeat: no-repeat;
   background-position: right 3em top 1em;
   transition: background-image 0.125s ease;
+  // preload hidden images
+  &:before {
+    content: '';
+    position: absolute;
+    height: 1;
+    width: 1;
+    left: -9999px;
+    background-image:
+      url('/img/allYeText.svg'),
+      url('/img/graduationText.svg'),
+      url('/img/darkFantasyText.svg'),
+      url('/img/yeezusText.svg'),
+      url('/img/saintYeText.svg')
+    ;
+  }
   &.allYe {
     background-image: url('/img/allYeText.svg');
   }
