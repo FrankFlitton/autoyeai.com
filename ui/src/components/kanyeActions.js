@@ -23,58 +23,6 @@ const KanyeActions = () => {
     return worker
   }
 
-  // const updatePayload = async (char) => {
-  //   let prevWord = ''
-
-  //   // Local Payload
-  //   await setLocalPayload(prevState => {
-  //     console.log(localPayload, char)
-  //     let oldState = [...prevState]
-
-  //     if (char.match(/[ \n]/g) && !isFinished) prevWord = oldState[oldState.length - 1]
-
-  //     if (char === '\n') {
-  //       oldState = [...oldState, ...[char, '']]
-  //     } else if (char.match(/[ ,?!-–—]/g)) {
-  //       const isSentenceEnd = char.match(/[?!.]/)
-  //       if (isSentenceEnd) {
-  //         oldState = [...oldState, ...[char, '\n', '']]
-  //       } else {
-  //         oldState = [...oldState, ...[char, '']]
-  //       }
-  //     } else {
-  //       const newState = [...oldState]
-  //       const lastToken = newState.pop()
-  //       oldState = [...newState, ...[lastToken + char]]
-  //     }
-
-  //     // if (oldState.length > 3) {
-  //     //   if (
-  //     //     oldState[oldState.length - 1] === '' &&
-  //     //     oldState[oldState.length - 2] === ''
-  //     //   ) {
-  //     //     oldState.pop()
-  //     //     oldState.pop()
-  //     //     oldState.push('\n')
-  //     //     oldState.push('')
-  //     //   }
-  //     // }
-
-  //     // setPayload(oldState)
-  //     return oldState
-  //   })
-
-  //   // Check to correct
-  //   if (isFinished) prevWord = localPayload[localPayload.length - 1]
-  //   if (isFinished || (char.match(/[ \n]/g) && prevWord !== '')) {
-  //     setCorrectedText(prevState => {
-  //       return char === '\n'
-  //         ? [...prevState, ...[fixWord(prevWord), '\n']]
-  //         : [...prevState, ...[fixWord(prevWord)]]
-  //     })
-  //   }
-  // }
-
   function updatePayload (char) {
     let prevWord = ''
 
@@ -84,15 +32,10 @@ const KanyeActions = () => {
       if (char.match(/[ \n]/g)) prevWord = oldState[oldState.length - 1]
       if (char === '\n') {
         return [...prevState, ...[char, '']]
-      } else if (
-        oldState[oldState.length - 1] === '' &&
-        oldState[oldState.length - 2] === ''
-      ) {
-        oldState.pop()
-        oldState.pop()
-        oldState.push('\n')
-      } else if (char.match(/[ ,?!]/g)) {
-        let next = char.match(/[ ,?!]/g)[0] === ' ' ? '' : char.match(/[ ,?!-–—]/g)[0]
+      } else if (char === ' ') {
+        return [...prevState, '']
+      } else if (char.match(/[ ,?!]/)) {
+        let next = char.match(/[ ,?!]/)[0] === ' ' ? '' : char.match(/[ ,?!-–—]/g)[0]
 
         const isSentenceEnd = char.match(/[?!.]/)
         if (isSentenceEnd) {
@@ -108,6 +51,16 @@ const KanyeActions = () => {
         const newState = [...oldState]
         const lastToken = newState.pop()
         oldState = [...newState, ...[lastToken + char]]
+      }
+
+      if (
+        oldState[oldState.length - 1] === '' &&
+        oldState[oldState.length - 2] === ''
+      ) {
+        oldState.pop()
+        oldState.pop()
+        oldState.push('\n')
+        oldState.push('')
       }
       // setPayload(oldState)
       return oldState
