@@ -221,13 +221,13 @@ const KanyeActions = () => {
             : <LyricsViewer value={ typedText(correctedText, localPayload) } />
         }
       </Col>
-      For Debugging:
+      {/* For Debugging:
       <Col xs={12}><button onClick={() => abort()}>abort</button></Col>
       <Col cols={12}>
         Is loaded: { isLoaded.toString() } <br />
         seed: { seed }
       </Col>
-       <Col cols={12} sm={6}>
+      <Col cols={12} sm={6}>
         <div>
           <p>payload</p>
           <p>{ JSON.stringify(localPayload) }</p>
@@ -236,7 +236,7 @@ const KanyeActions = () => {
           <p>corrected</p>
           <p>{ JSON.stringify(correctedText) }</p>
         </div>
-      </Col>
+      </Col> */}
     </Row>
   )
 }
