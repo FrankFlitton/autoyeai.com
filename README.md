@@ -1,8 +1,6 @@
 # auto-ye-ai
 
-> WIP
-
-An attempt to make a Kanye West lyrics generator.
+An attempt to make a tensorflow Kanye West lyrics generator.
 
 Large model files and data results are managed with [Git LFS](https://git-lfs.github.com/).
 
@@ -11,7 +9,9 @@ Large model files and data results are managed with [Git LFS](https://git-lfs.gi
 - [x] Web scraper with failover
 - [x] Create tagged data set of major releases and text file
 - [x] Train model with vocabulary
-- [ ] Expose model in a web UI (WIP)
+- [x] Expose model in a web UI (WIP)
 - [x] Create spellcheck output with custom vocabulary to account for randomness
 - [x] NSFW "Calm Ye" mode
-- [ ] Train Era specific models (2/5)
+- [x] Train Era specific models (5/5)
+
+MVP Complete!
