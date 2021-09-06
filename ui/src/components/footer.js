@@ -12,11 +12,6 @@ const StyledFooter = styled.footer`
 
 const Footer = () => {
 
-  // function getYear () {
-  //   const d = new Date();
-  //   return d.getFullYear();
-  // }
-
   return (
     <StyledFooter>
       <Container>
@@ -28,10 +23,29 @@ const Footer = () => {
                 href="https://frankflitton.com/"
                 target="_blank"
                 rel="noreferrer"
-              >
+                >
                 Frank Flitton
               </a>
-            .</p>
+            </p>
+            <p>
+              <a
+                href="https://javascript.plainenglish.io/i-stuffed-tensorflow-js-into-a-react-app-3fd8678019f5"
+                target="_blank"
+                rel="noreferrer"
+                >
+                  How AutoYe works
+              </a>
+            </p>
+            <p>
+              Source code&nbsp;
+              <a
+                href="https://github.com/FrankFlitton/autoyeai.com"
+                target="_blank"
+                rel="noreferrer"
+                >
+                  on Github
+              </a>
+            </p>
           </Col>
         </Row>
       </Container>
