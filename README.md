@@ -1,6 +1,12 @@
-# auto-ye-ai
+# AutoYeAI.com
 
-An attempt to make a tensorflow Kanye West lyrics generator.
+An attempt to make a tensorflow Kanye West lyrics generator with JavaScript.
+
+![AutoYe Social Image](https://raw.githubusercontent.com/FrankFlitton/autoyeai.com/main/ui/public/img/social.jpg)
+
+See it live here: [autoyeai.com](https://autoyeai.com/)
+
+The motivation and strategy behind AutoYe can be found [here on medium](https://javascript.plainenglish.io/i-stuffed-tensorflow-js-into-a-react-app-3fd8678019f5)
 
 Large model files and data results are managed with [Git LFS](https://git-lfs.github.com/).
 
