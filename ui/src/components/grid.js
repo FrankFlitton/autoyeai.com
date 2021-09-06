@@ -103,6 +103,7 @@ const AppContainer = styled.div`
   --darkFilter: ${props => props.dark ? 'invert(1) hue-rotate(180deg)' : 'invert(0) hue-rotate(0deg)'};
 
   width: 100%;
+  height: 100%;
   color: var(--primaryTextColor);
   background: var(--secondaryTextColor);
 
